@@ -114,9 +114,8 @@ def show_results_summary():
         ('results/graficos/throughput_analysis.png', 'Análise de throughput'),
         ('results/graficos/scalability_analysis.png', 'Análise de escalabilidade'),
         ('results/graficos/correlation_heatmap.png', 'Heatmap de correlação'),
-        ('results/graficos/statistical_analysis.txt', 'Análise estatística detalhada'),
         ('results/graficos/summary_table.csv', 'Tabela resumo'),
-        ('docs/relatorio_tecnico_abnt.txt', 'Relatório técnico completo (ABNT)')
+        ('docs/relatorio_latex_abnt.tex', 'Relatório técnico LaTeX (ABNT)')
     ]
     
     for filename, description in files_to_check:
@@ -158,10 +157,10 @@ def main():
     print("="*80)
     
     print("\nPróximos passos:")
-    print("1. Revise o relatório técnico: docs/relatorio_tecnico_abnt.txt")
+    print("1. Compile o relatório LaTeX: docs/relatorio_latex_abnt.tex")
     print("2. Examine os gráficos na pasta: results/graficos/")
     print("3. Analise os dados brutos: data/benchmark_results.csv")
-    print("4. Consulte a análise estatística: results/graficos/statistical_analysis.txt")
+    print("4. Use as imagens PNG no Overleaf junto com o LaTeX")
 
 if __name__ == "__main__":
     main()

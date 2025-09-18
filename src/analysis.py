@@ -250,10 +250,7 @@ ANÁLISE ESTATÍSTICA DOS ALGORITMOS DE CRIPTOGRAFIA
    - Throughput médio: {alg_data['throughput_encrypt'].mean():.2f}MB/s (±{alg_data['throughput_encrypt'].std():.2f})
 """
         
-        # Salvar relatório
-        with open(f'{self.output_dir}/statistical_analysis.txt', 'w', encoding='utf-8') as f:
-            f.write(stats_report)
-        
+        # Retornar relatório sem salvar arquivo
         return stats_report
     
     def create_heatmap_correlation(self):

@@ -27,7 +27,6 @@ crypto-performance-study/
 ├── results/                    # Resultados e gráficos
 │   └── graficos/              # Visualizações geradas
 ├── docs/                       # Documentação
-│   ├── relatorio_tecnico_abnt.txt  # Relatório em texto
 │   └── relatorio_latex_abnt.tex    # Relatório em LaTeX
 ├── requirements.txt            # Dependências Python
 └── README.md                  # Este arquivo
@@ -125,9 +124,9 @@ python src/report_generator.py
 
 ## Documentação
 
-- **Relatório Técnico**: Documento completo em formato ABNT disponível em `docs/`
-- **Código LaTeX**: Versão LaTeX para compilação em PDF no Overleaf
-- **Análises Estatísticas**: Resultados detalhados em `results/graficos/`
+- **Relatório LaTeX**: Documento completo em formato ABNT para compilação em PDF
+- **Gráficos**: 4 visualizações PNG profissionais para inclusão no relatório
+- **Dados**: Tabela resumo CSV com estatísticas detalhadas
 
 ## Licença
 

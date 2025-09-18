@@ -325,6 +325,7 @@ STALLINGS, William. Cryptography and Network Security: Principles and Practice. 
     
     def generate_complete_report(self):
         """Gera relatório completo"""
+        # Não gera mais o arquivo TXT, apenas retorna o conteúdo
         report_sections = [
             self.generate_cover_page(),
             self.generate_abstract(),
@@ -338,11 +339,7 @@ STALLINGS, William. Cryptography and Network Security: Principles and Practice. 
         
         complete_report = "\n".join(report_sections)
         
-        # Salvar relatório
-        with open('docs/relatorio_tecnico_abnt.txt', 'w', encoding='utf-8') as f:
-            f.write(complete_report)
-        
-        print("Relatório técnico gerado: 'docs/relatorio_tecnico_abnt.txt'")
+        print("Relatório técnico preparado (apenas LaTeX será usado)")
         return complete_report
 
 def main():
@@ -350,9 +347,57 @@ def main():
         # Carregar dados
         df = pd.read_csv('data/benchmark_results.csv')
         
-        # Carregar análise estatística
-        with open('results/graficos/statistical_analysis.txt', 'r', encoding='utf-8') as f:
-            stats_report = f.read()
+        # Criar análise estatística inline
+        algorithms = df['algorithm'].unique()
+        
+        # ANOVA para tempo de criptografia
+        groups_encrypt = [df[df['algorithm'] == alg]['encrypt_time_mean'].values 
+                         for alg in algorithms]
+        f_stat_encrypt, p_value_encrypt = stats.f_oneway(*groups_encrypt)
+        
+        # ANOVA para uso de CPU
+        groups_cpu = [df[df['algorithm'] == alg]['encrypt_cpu_mean'].values 
+                     for alg in algorithms]
+        f_stat_cpu, p_value_cpu = stats.f_oneway(*groups_cpu)
+        
+        # ANOVA para uso de memória
+        groups_memory = [df[df['algorithm'] == alg]['encrypt_memory_mean'].values 
+                        for alg in algorithms]
+        f_stat_memory, p_value_memory = stats.f_oneway(*groups_memory)
+        
+        # Criar relatório estatístico
+        stats_report = f"""
+ANÁLISE ESTATÍSTICA DOS ALGORITMOS DE CRIPTOGRAFIA
+
+1. ANÁLISE DE VARIÂNCIA (ANOVA)
+   
+   Tempo de Criptografia:
+   - F-statistic: {f_stat_encrypt:.4f}
+   - P-value: {p_value_encrypt:.6f}
+   - Significância: {'Sim' if p_value_encrypt < 0.05 else 'Não'} (α = 0.05)
+   
+   Uso de CPU:
+   - F-statistic: {f_stat_cpu:.4f}
+   - P-value: {p_value_cpu:.6f}
+   - Significância: {'Sim' if p_value_cpu < 0.05 else 'Não'} (α = 0.05)
+   
+   Uso de Memória:
+   - F-statistic: {f_stat_memory:.4f}
+   - P-value: {p_value_memory:.6f}
+   - Significância: {'Sim' if p_value_memory < 0.05 else 'Não'} (α = 0.05)
+
+2. ESTATÍSTICAS DESCRITIVAS POR ALGORITMO
+"""
+        
+        for algorithm in algorithms:
+            alg_data = df[df['algorithm'] == algorithm]
+            stats_report += f"""
+   {algorithm}:
+   - Tempo médio de criptografia: {alg_data['encrypt_time_mean'].mean():.6f}s (±{alg_data['encrypt_time_mean'].std():.6f})
+   - CPU médio: {alg_data['encrypt_cpu_mean'].mean():.2f}% (±{alg_data['encrypt_cpu_mean'].std():.2f})
+   - Memória média: {alg_data['encrypt_memory_mean'].mean():.2f}MB (±{alg_data['encrypt_memory_mean'].std():.2f})
+   - Throughput médio: {alg_data['throughput_encrypt'].mean():.2f}MB/s (±{alg_data['throughput_encrypt'].std():.2f})
+"""
         
         analysis_results = {'statistical_report': stats_report}
         
@@ -360,7 +405,7 @@ def main():
         generator = ABNTReportGenerator(df, analysis_results)
         report = generator.generate_complete_report()
         
-        print(f"Relatório completo gerado com {len(report.split())} palavras")
+        print(f"Relatório preparado (LaTeX disponível em docs/)")
         
     except FileNotFoundError as e:
         print(f"Arquivo não encontrado: {e}")

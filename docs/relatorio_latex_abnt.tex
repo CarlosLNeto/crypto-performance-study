@@ -251,6 +251,44 @@ A análise de variância (ANOVA) foi aplicada para verificar diferenças signifi
 
 Os resultados indicam que, estatisticamente, não há diferenças significativas entre os algoritmos ao nível de significância α = 0,05.
 
+\subsection{Visualizações dos Resultados}
+
+A Figura~\ref{fig:performance} apresenta uma comparação abrangente de performance entre os algoritmos, mostrando tempo de execução, uso de CPU e memória para diferentes tamanhos de dados.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{performance_comparison.png}
+\caption{Comparação de Performance dos Algoritmos de Criptografia}
+\label{fig:performance}
+\end{figure}
+
+A análise de throughput, apresentada na Figura~\ref{fig:throughput}, revela a capacidade de processamento de cada algoritmo através de boxplots que mostram a distribuição, mediana e outliers.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{throughput_analysis.png}
+\caption{Análise de Throughput por Algoritmo}
+\label{fig:throughput}
+\end{figure}
+
+A Figura~\ref{fig:scalability} demonstra como cada algoritmo se comporta com o aumento do volume de dados, permitindo prever o desempenho em cenários de produção.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{scalability_analysis.png}
+\caption{Análise de Escalabilidade por Tamanho de Dados}
+\label{fig:scalability}
+\end{figure}
+
+A matriz de correlação apresentada na Figura~\ref{fig:correlation} identifica relações importantes entre as diferentes métricas de performance, auxiliando na compreensão dos trade-offs.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{correlation_heatmap.png}
+\caption{Matriz de Correlação entre Métricas de Performance}
+\label{fig:correlation}
+\end{figure}
+
 \subsection{Análise de Escalabilidade}
 
 A análise de escalabilidade revela como cada algoritmo se comporta com o aumento do volume de dados. Os gráficos gerados mostram tendências claras de crescimento linear para diferentes métricas, permitindo prever o comportamento dos algoritmos em cenários de produção.
