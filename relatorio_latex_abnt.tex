@@ -92,7 +92,7 @@ Manaus -- AM\\
 \newpage
 \section*{RESUMO}
 
-Este trabalho apresenta um estudo abrangente sobre criptografia aplicada, dividido em duas atividades complementares. A Atividade 1 consiste em uma analise comparativa de desempenho computacional entre tres algoritmos de criptografia simetrica: Advanced Encryption Standard (AES), Blowfish e Twofish, avaliando metricas de CPU, memoria, tempo de execucao e throughput com 40 configuracoes testadas e 100 iteracoes cada. A Atividade 2 desenvolve uma aplicacao pratica de envio de mensagens com assinatura digital, implementando geracao de certificados X.509 ad-hoc e verificacao de autenticidade com RSA-PSS e SHA-256. Os resultados da Atividade 1 demonstram que o AES oferece o melhor throughput medio (277,80 MB/s), enquanto o Blowfish apresenta menor consumo de recursos (155,48 MB/s). Na Atividade 2, a aplicacao demonstrou 100\% de eficacia na deteccao de alteracoes, com tempos de geracao de certificados de 79,7ms, assinatura de 0,98ms e verificacao de 0,13ms. O trabalho contribui para o entendimento pratico da criptografia moderna, fornecendo dados quantitativos para selecao de algoritmos e uma implementacao funcional de infraestrutura de chave publica.
+Este trabalho apresenta um estudo abrangente sobre criptografia aplicada, dividido em duas atividades complementares. A Atividade 1 consiste em uma analise comparativa de desempenho computacional entre tres algoritmos de criptografia simetrica: Advanced Encryption Standard (AES), Blowfish e Twofish, avaliando metricas de CPU, memoria, tempo de execucao e throughput com 40 configuracoes testadas e 100 iteracoes cada. A Atividade 2 desenvolve uma aplicacao pratica de envio de mensagens com assinatura digital, implementando geracao de certificados X.509 ad-hoc, verificacao de autenticidade com RSA-PSS e SHA-256, e uma interface web completa para demonstracao interativa do sistema. Os resultados da Atividade 1 demonstram que o AES oferece o melhor throughput medio (277,80 MB/s), enquanto o Blowfish apresenta menor consumo de recursos (155,48 MB/s). Na Atividade 2, a aplicacao demonstrou 100\% de eficacia na deteccao de alteracoes, com tempos de geracao de certificados de 79,7ms, assinatura de 0,98ms e verificacao de 0,13ms, alem de uma interface web funcional para chat em tempo real com assinatura digital. O trabalho contribui para o entendimento pratico da criptografia moderna, fornecendo dados quantitativos para selecao de algoritmos e uma implementacao funcional de infraestrutura de chave publica com demonstracao web interativa.
 
 \vspace{0.5cm}
 \noindent\textbf{Palavras-chave:} Criptografia. Algoritmos simetricos. Assinatura digital. Certificados digitais. Desempenho computacional. Seguranca da informacao.
@@ -122,6 +122,7 @@ Realizar um estudo abrangente sobre criptografia aplicada, comparando o desempen
     \item \textbf{Atividade 1}: Analisar o comportamento dos algoritmos com diferentes tamanhos de dados e configuracoes de chave;
     \item \textbf{Atividade 2}: Desenvolver uma aplicacao de envio de mensagens com assinatura digital;
     \item \textbf{Atividade 2}: Implementar geracao de certificados digitais X.509 ad-hoc;
+    \item \textbf{Atividade 2}: Criar interface web para demonstracao interativa do sistema;
     \item Realizar analises estatisticas para validar a significancia das diferencas observadas;
     \item Gerar visualizacoes graficas para facilitar a interpretacao dos resultados;
     \item Fornecer recomendacoes praticas baseadas nos resultados obtidos.
@@ -157,6 +158,41 @@ O RSA e baseado na dificuldade de fatoracao de numeros inteiros grandes. Para as
 \subsubsection{Certificados Digitais X.509}
 
 Os certificados digitais seguem o padrao X.509 e contem informacoes como nome do titular, chave publica, periodo de validade e assinatura de uma autoridade certificadora.
+
+\subsection{Tecnologias Utilizadas}
+
+\subsubsection{Linguagens e Frameworks}
+
+\begin{itemize}
+    \item \textbf{Python 3.13}: Linguagem principal para implementacao de todos os algoritmos e aplicacoes
+    \item \textbf{Flask 2.3+}: Framework web para desenvolvimento da interface de chat
+    \item \textbf{HTML5/CSS3/JavaScript}: Tecnologias frontend para interface web responsiva
+\end{itemize}
+
+\subsubsection{Bibliotecas Criptograficas}
+
+\begin{itemize}
+    \item \textbf{cryptography}: Biblioteca principal para operacoes criptograficas modernas
+    \item \textbf{pycryptodome}: Implementacao dos algoritmos Blowfish e Twofish
+    \item \textbf{werkzeug}: Utilitarios de seguranca para hash de senhas
+\end{itemize}
+
+\subsubsection{Bibliotecas de Analise e Visualizacao}
+
+\begin{itemize}
+    \item \textbf{matplotlib}: Geracao de graficos e visualizacoes
+    \item \textbf{seaborn}: Visualizacoes estatisticas avancadas
+    \item \textbf{pandas}: Manipulacao e analise de dados
+    \item \textbf{numpy}: Computacao numerica e operacoes matematicas
+    \item \textbf{scipy}: Analises estatisticas (ANOVA)
+\end{itemize}
+
+\subsubsection{Bibliotecas de Sistema}
+
+\begin{itemize}
+    \item \textbf{psutil}: Monitoramento de recursos do sistema (CPU, memoria)
+    \item \textbf{tabulate}: Formatacao de tabelas para relatorios
+\end{itemize}
 
 % DESENVOLVIMENTO
 \section{DESENVOLVIMENTO}
@@ -239,6 +275,59 @@ O processo implementa o padrao PSS (Probabilistic Signature Scheme) com hash SHA
 
 A verificacao valida tanto a integridade da mensagem quanto a autenticidade do remetente atraves da comparacao de hashes e verificacao da assinatura com chave publica.
 
+\subsection{Interface Web para Demonstracao}
+
+Para demonstrar a aplicacao de assinatura digital de forma interativa, foi desenvolvida uma interface web completa utilizando Flask como framework backend e HTML5/CSS3/JavaScript para o frontend.
+
+\subsubsection{Arquitetura da Interface Web}
+
+A aplicacao web implementa um sistema de chat seguro com as seguintes caracteristicas:
+
+\begin{itemize}
+    \item \textbf{Sistema de Autenticacao}: Login seguro com senhas hash utilizando Werkzeug
+    \item \textbf{Gerenciamento de Sessoes}: Controle de usuarios logados com Flask sessions
+    \item \textbf{Interface Responsiva}: Design moderno adaptavel a diferentes dispositivos
+    \item \textbf{Chat em Tempo Real}: Atualizacao automatica de mensagens a cada 3 segundos
+\end{itemize}
+
+\subsubsection{Funcionalidades Implementadas}
+
+\begin{enumerate}
+    \item \textbf{Autenticacao de Usuarios}: Sistema com 3 usuarios pre-cadastrados (carlos, eric, alexandro)
+    \item \textbf{Geracao Automatica de Certificados}: Certificados X.509 criados no primeiro login
+    \item \textbf{Envio de Mensagens Assinadas}: Todas as mensagens sao automaticamente assinadas
+    \item \textbf{Verificacao Interativa}: Botao para verificar assinatura de qualquer mensagem
+    \item \textbf{Estatisticas em Tempo Real}: Contador de mensagens, verificacoes e certificados
+    \item \textbf{Deteccao de Alteracoes}: Sistema detecta 100\% das tentativas de modificacao
+\end{enumerate}
+
+\begin{lstlisting}[caption=Estrutura da aplicacao Flask]
+@app.route('/send_message', methods=['POST'])
+def send_message():
+    # Obter dados da mensagem
+    message_text = data.get('message', '').strip()
+    recipient = data.get('recipient', '').strip()
+    
+    # Assinar mensagem automaticamente
+    signed_message = signature_app.send_message(
+        sender_cert_id, recipient_email, message_text
+    )
+    
+    # Armazenar no chat
+    messages_store.append(chat_message)
+    return jsonify({'success': True})
+\end{lstlisting}
+
+\subsubsection{Tecnologias da Interface Web}
+
+\begin{itemize}
+    \item \textbf{Backend}: Flask 2.3+ com roteamento RESTful
+    \item \textbf{Frontend}: HTML5 semantico, CSS3 com gradientes, JavaScript ES6
+    \item \textbf{Seguranca}: Werkzeug para hash de senhas, Flask sessions
+    \item \textbf{Comunicacao}: AJAX para requisicoes assincronas
+    \item \textbf{Responsividade}: Design adaptavel com Flexbox
+\end{itemize}
+
 % ANALISE DOS DADOS
 \section{ANALISE DOS DADOS}
 
@@ -309,14 +398,28 @@ Os resultados indicam que, estatisticamente, nao ha diferencas significativas en
 
 \subsection{Demonstracao Funcional}
 
-A aplicacao foi testada com sucesso, demonstrando capacidade de:
+A aplicacao foi testada com sucesso em duas modalidades: linha de comando e interface web, demonstrando capacidade de:
 
 \begin{itemize}
-    \item Gerar certificados X.509 auto-assinados (2 certificados criados)
-    \item Assinar mensagens digitalmente com RSA-PSS (1 mensagem processada)
-    \item Verificar assinaturas e detectar alteracoes (2 verificacoes realizadas)
+    \item Gerar certificados X.509 auto-assinados (2 certificados criados via CLI, 3 usuarios na web)
+    \item Assinar mensagens digitalmente com RSA-PSS (1 mensagem via CLI, multiplas via web)
+    \item Verificar assinaturas e detectar alteracoes (2 verificacoes via CLI, interativas na web)
     \item Armazenar mensagens em formato JSON
-    \item Taxa de deteccao de alteracoes: 100\%
+    \item Taxa de deteccao de alteracoes: 100\% em ambas as modalidades
+    \item Interface web funcional com chat em tempo real
+\end{itemize}
+
+\subsubsection{Demonstracao via Interface Web}
+
+A interface web permite demonstracao interativa com:
+
+\begin{itemize}
+    \item \textbf{3 usuarios pre-cadastrados}: carlos, eric, alexandro
+    \item \textbf{Login seguro}: Senhas hash com Werkzeug
+    \item \textbf{Chat em tempo real}: Atualizacao automatica a cada 3 segundos
+    \item \textbf{Verificacao interativa}: Botao para verificar qualquer mensagem
+    \item \textbf{Estatisticas dinamicas}: Contadores em tempo real
+    \item \textbf{Acesso via navegador}: http://localhost:8080
 \end{itemize}
 
 \subsection{Metricas de Performance Detalhadas}
@@ -388,13 +491,15 @@ Os resultados da analise comparativa revelam que o AES mantem sua posicao como a
 
 \subsection{Interpretacao dos Resultados - Atividade 2}
 
-A aplicacao de assinatura digital demonstrou excelente performance operacional:
+A aplicacao de assinatura digital demonstrou excelente performance operacional e usabilidade:
 
 \begin{itemize}
     \item \textbf{Eficiencia}: Verificacao 7x mais rapida que assinatura
     \item \textbf{Escalabilidade}: Throughput cresce linearmente com tamanho da mensagem
     \item \textbf{Confiabilidade}: 100\% de deteccao de alteracoes
     \item \textbf{Praticidade}: Certificados ad-hoc eliminam necessidade de PKI
+    \item \textbf{Usabilidade}: Interface web intuitiva para demonstracao interativa
+    \item \textbf{Tempo Real}: Chat funcional com atualizacoes automaticas
 \end{itemize}
 
 \subsection{Comparacao entre Atividades}
@@ -409,7 +514,7 @@ Para aplicacoes que priorizam velocidade, o AES e a escolha optimal. Para sistem
 
 \subsubsection{Implementacao de Assinatura Digital (Atividade 2)}
 
-A aplicacao desenvolvida demonstra viabilidade de sistemas de assinatura digital sem infraestrutura complexa de PKI, adequada para ambientes controlados com excelente relacao custo-beneficio.
+A aplicacao desenvolvida demonstra viabilidade de sistemas de assinatura digital sem infraestrutura complexa de PKI, adequada para ambientes controlados com excelente relacao custo-beneficio. A interface web desenvolvida permite demonstracao interativa e educacional do sistema, facilitando o entendimento dos conceitos de assinatura digital, autenticidade e integridade de mensagens.
 
 % CONCLUSAO
 \section{CONCLUSAO}
@@ -422,7 +527,7 @@ A analise comparativa dos algoritmos AES, Blowfish e Twofish confirmou que o AES
 
 \subsection{Contribuicoes da Atividade 2}
 
-A aplicacao de assinatura digital desenvolvida demonstrou eficacia completa na garantia de autenticidade, integridade e nao-repudio. Com tempos de operacao de 79,7ms para geracao de certificados, 0,98ms para assinatura e 0,13ms para verificacao, o sistema apresenta performance adequada para uso pratico.
+A aplicacao de assinatura digital desenvolvida demonstrou eficacia completa na garantia de autenticidade, integridade e nao-repudio. Com tempos de operacao de 79,7ms para geracao de certificados, 0,98ms para assinatura e 0,13ms para verificacao, o sistema apresenta performance adequada para uso pratico. A interface web desenvolvida com Flask proporciona demonstracao interativa e educacional, permitindo que usuarios testem o sistema de assinatura digital em tempo real atraves de um chat seguro com 3 usuarios pre-cadastrados e verificacao de integridade com um clique.
 
 \subsection{Integracao dos Resultados}
 
