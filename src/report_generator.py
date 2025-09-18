@@ -339,19 +339,19 @@ STALLINGS, William. Cryptography and Network Security: Principles and Practice. 
         complete_report = "\n".join(report_sections)
         
         # Salvar relatório
-        with open('relatorio_tecnico_abnt.txt', 'w', encoding='utf-8') as f:
+        with open('docs/relatorio_tecnico_abnt.txt', 'w', encoding='utf-8') as f:
             f.write(complete_report)
         
-        print("Relatório técnico gerado: 'relatorio_tecnico_abnt.txt'")
+        print("Relatório técnico gerado: 'docs/relatorio_tecnico_abnt.txt'")
         return complete_report
 
 def main():
     try:
         # Carregar dados
-        df = pd.read_csv('benchmark_results.csv')
+        df = pd.read_csv('data/benchmark_results.csv')
         
         # Carregar análise estatística
-        with open('graficos/statistical_analysis.txt', 'r', encoding='utf-8') as f:
+        with open('results/graficos/statistical_analysis.txt', 'r', encoding='utf-8') as f:
             stats_report = f.read()
         
         analysis_results = {'statistical_report': stats_report}

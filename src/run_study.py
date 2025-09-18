@@ -51,7 +51,7 @@ def run_benchmark():
     print("-" * 40)
     
     try:
-        from crypto_benchmark import main as benchmark_main
+        from src.crypto_benchmark import main as benchmark_main
         
         start_time = time.time()
         results_df = benchmark_main()
@@ -71,7 +71,7 @@ def run_analysis():
     print("-" * 40)
     
     try:
-        from analysis import main as analysis_main
+        from src.analysis import main as analysis_main
         
         start_time = time.time()
         analysis_results = analysis_main()
@@ -90,7 +90,7 @@ def generate_report():
     print("-" * 40)
     
     try:
-        from report_generator import main as report_main
+        from src.report_generator import main as report_main
         
         start_time = time.time()
         report_main()
@@ -109,14 +109,14 @@ def show_results_summary():
     print("-" * 40)
     
     files_to_check = [
-        ('benchmark_results.csv', 'Dados brutos do benchmark'),
-        ('graficos/performance_comparison.png', 'Gráficos de comparação de performance'),
-        ('graficos/throughput_analysis.png', 'Análise de throughput'),
-        ('graficos/scalability_analysis.png', 'Análise de escalabilidade'),
-        ('graficos/correlation_heatmap.png', 'Heatmap de correlação'),
-        ('graficos/statistical_analysis.txt', 'Análise estatística detalhada'),
-        ('graficos/summary_table.csv', 'Tabela resumo'),
-        ('relatorio_tecnico_abnt.txt', 'Relatório técnico completo (ABNT)')
+        ('data/benchmark_results.csv', 'Dados brutos do benchmark'),
+        ('results/graficos/performance_comparison.png', 'Gráficos de comparação de performance'),
+        ('results/graficos/throughput_analysis.png', 'Análise de throughput'),
+        ('results/graficos/scalability_analysis.png', 'Análise de escalabilidade'),
+        ('results/graficos/correlation_heatmap.png', 'Heatmap de correlação'),
+        ('results/graficos/statistical_analysis.txt', 'Análise estatística detalhada'),
+        ('results/graficos/summary_table.csv', 'Tabela resumo'),
+        ('docs/relatorio_tecnico_abnt.txt', 'Relatório técnico completo (ABNT)')
     ]
     
     for filename, description in files_to_check:
@@ -158,10 +158,10 @@ def main():
     print("="*80)
     
     print("\nPróximos passos:")
-    print("1. Revise o relatório técnico: relatorio_tecnico_abnt.txt")
-    print("2. Examine os gráficos na pasta: graficos/")
-    print("3. Analise os dados brutos: benchmark_results.csv")
-    print("4. Consulte a análise estatística: graficos/statistical_analysis.txt")
+    print("1. Revise o relatório técnico: docs/relatorio_tecnico_abnt.txt")
+    print("2. Examine os gráficos na pasta: results/graficos/")
+    print("3. Analise os dados brutos: data/benchmark_results.csv")
+    print("4. Consulte a análise estatística: results/graficos/statistical_analysis.txt")
 
 if __name__ == "__main__":
     main()

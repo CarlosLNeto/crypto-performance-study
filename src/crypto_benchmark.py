@@ -184,8 +184,8 @@ def main():
     df = benchmark.run_benchmark()
     
     # Salva resultados
-    df.to_csv('benchmark_results.csv', index=False)
-    print(f"\nResultados salvos em 'benchmark_results.csv'")
+    df.to_csv('data/benchmark_results.csv', index=False)
+    print(f"\nResultados salvos em 'data/benchmark_results.csv'")
     print(f"Total de testes realizados: {len(df)}")
     
     return df
