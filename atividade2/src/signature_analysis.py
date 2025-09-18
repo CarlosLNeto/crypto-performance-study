@@ -11,8 +11,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from digital_signature_app import DigitalSignatureApp
 import os
+import sys
+
+# Adicionar path para importar o módulo
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from digital_signature_app import DigitalSignatureApp
 
 class SignaturePerformanceAnalyzer:
     """Analisador de performance para assinatura digital"""
