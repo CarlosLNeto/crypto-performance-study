@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Seguro - {{ username }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid #e1e5e9;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .users-section {
+            padding: 1rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        
+        .users-section h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .user-list {
+            list-style: none;
+        }
+        
+        .user-item {
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+            margin-bottom: 0.25rem;
+        }
+        
+        .user-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .user-item.selected {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .stats-section {
+            padding: 1rem;
+            flex: 1;
+        }
+        
+        .stats-section h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+        
+        .messages-container {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #fafbfc;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            max-width: 70%;
+            position: relative;
+        }
+        
+        .message.sent {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-left: auto;
+        }
+        
+        .message.received {
+            background: white;
+            border: 1px solid #e1e5e9;
+            color: #333;
+        }
+        
+        .message-header {
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+        
+        .message-content {
+            margin-bottom: 0.5rem;
+        }
+        
+        .message-footer {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .verify-btn {
+            background: rgba(255,255,255,0.2);
+            color: inherit;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+        
+        .verify-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .verification-status {
+            font-weight: bold;
+        }
+        
+        .verification-status.valid {
+            color: #28a745;
+        }
+        
+        .verification-status.invalid {
+            color: #dc3545;
+        }
+        
+        .message-form {
+            padding: 1rem;
+            border-top: 1px solid #e1e5e9;
+            background: white;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .recipient-select {
+            padding: 0.5rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 5px;
+            resize: none;
+            font-family: inherit;
+        }
+        
+        .send-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .send-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .crypto-info {
+            background: #e8f5e8;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            color: #2d5a2d;
+            margin-bottom: 0.5rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔐 Chat Seguro</h1>
+        <div class="user-info">
+            <span>Logado como: <strong>{{ username }}</strong></span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="users-section">
+                <h3>👥 Usuários Online</h3>
+                <ul class="user-list" id="userList">
+                    <!-- Usuários serão carregados via JavaScript -->
+                </ul>
+            </div>
+            
+            <div class="stats-section">
+                <h3>📊 Estatísticas</h3>
+                <div id="statsContainer">
+                    <!-- Estatísticas serão carregadas via JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <div class="messages-container" id="messagesContainer">
+                <div class="loading">Carregando mensagens...</div>
+            </div>
+            
+            <div class="message-form">
+                <div class="crypto-info">
+                    🔒 Todas as mensagens são assinadas digitalmente com RSA-PSS + SHA-256
+                </div>
+                
+                <div class="form-row">
+                    <select class="recipient-select" id="recipientSelect">
+                        <option value="">Selecione o destinatário...</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <textarea class="message-input" id="messageInput" placeholder="Digite sua mensagem..." rows="3"></textarea>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar</button>
+                </div>
+                
+                <div id="errorContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = '{{ username }}';
+        let selectedRecipient = '';
+        let users = [];
+        let messages = [];
+        
+        // Carregar dados iniciais
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            loadMessages();
+            loadStats();
+            
+            // Atualizar a cada 3 segundos
+            setInterval(() => {
+                loadMessages();
+                loadStats();
+            }, 3000);
+        });
+        
+        async function loadUsers() {
+            try {
+                const response = await fetch('/get_users');
+                const data = await response.json();
+                users = data.users;
+                
+                const userList = document.getElementById('userList');
+                const recipientSelect = document.getElementById('recipientSelect');
+                
+                userList.innerHTML = '';
+                recipientSelect.innerHTML = '<option value="">Selecione o destinatário...</option>';
+                
+                users.forEach(user => {
+                    // Lista lateral
+                    const li = document.createElement('li');
+                    li.className = 'user-item';
+                    li.textContent = user.name;
+                    li.onclick = () => selectUser(user.username);
+                    userList.appendChild(li);
+                    
+                    // Select do formulário
+                    const option = document.createElement('option');
+                    option.value = user.username;
+                    option.textContent = user.name;
+                    recipientSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar usuários:', error);
+            }
+        }
+        
+        async function loadMessages() {
+            try {
+                const response = await fetch('/get_messages');
+                const data = await response.json();
+                messages = data.messages;
+                
+                displayMessages();
+            } catch (error) {
+                console.error('Erro ao carregar mensagens:', error);
+            }
+        }
+        
+        async function loadStats() {
+            try {
+                const response = await fetch('/chat_stats');
+                const data = await response.json();
+                
+                const statsContainer = document.getElementById('statsContainer');
+                statsContainer.innerHTML = `
+                    <div class="stat-item">
+                        <span>Total de mensagens:</span>
+                        <span>${data.total_messages}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Enviadas por você:</span>
+                        <span>${data.sent_by_user}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Recebidas por você:</span>
+                        <span>${data.received_by_user}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Verificadas:</span>
+                        <span>${data.verified_messages}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Certificados gerados:</span>
+                        <span>${data.certificates_generated}</span>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+        
+        function displayMessages() {
+            const container = document.getElementById('messagesContainer');
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<div class="loading">Nenhuma mensagem ainda. Envie a primeira!</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.sender === currentUser ? 'sent' : 'received'}`;
+                
+                const timestamp = new Date(msg.timestamp).toLocaleString('pt-BR');
+                
+                let verificationHtml = '';
+                if (msg.verified === true) {
+                    verificationHtml = '<span class="verification-status valid">✓ Verificada</span>';
+                } else if (msg.verified === false) {
+                    verificationHtml = '<span class="verification-status invalid">✗ Inválida</span>';
+                } else {
+                    verificationHtml = `<button class="verify-btn" onclick="verifyMessage(${msg.id})">Verificar</button>`;
+                }
+                
+                messageDiv.innerHTML = `
+                    <div class="message-header">
+                        ${msg.sender === currentUser ? 'Para: ' + msg.recipient_name : 'De: ' + msg.sender_name}
+                    </div>
+                    <div class="message-content">${msg.message}</div>
+                    <div class="message-footer">
+                        <span>${timestamp}</span>
+                        ${verificationHtml}
+                    </div>
+                `;
+                
+                container.appendChild(messageDiv);
+            });
+            
+            // Scroll para o final
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function selectUser(username) {
+            selectedRecipient = username;
+            document.getElementById('recipientSelect').value = username;
+            
+            // Atualizar visual da seleção
+            document.querySelectorAll('.user-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+        
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const recipientSelect = document.getElementById('recipientSelect');
+            const sendBtn = document.getElementById('sendBtn');
+            const errorContainer = document.getElementById('errorContainer');
+            
+            const message = messageInput.value.trim();
+            const recipient = recipientSelect.value;
+            
+            if (!message) {
+                showError('Digite uma mensagem');
+                return;
+            }
+            
+            if (!recipient) {
+                showError('Selecione um destinatário');
+                return;
+            }
+            
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'Enviando...';
+            
+            try {
+                const response = await fetch('/send_message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        recipient: recipient
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageInput.value = '';
+                    errorContainer.innerHTML = '';
+                    loadMessages();
+                    loadStats();
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Erro ao enviar mensagem: ' + error.message);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Enviar';
+            }
+        }
+        
+        async function verifyMessage(messageId) {
+            try {
+                const response = await fetch(`/verify_message/${messageId}`);
+                const data = await response.json();
+                
+                if (data.valid !== undefined) {
+                    loadMessages(); // Recarregar para mostrar status atualizado
+                } else {
+                    showError(data.error);
+                }
+            } catch (error) {
+                showError('Erro na verificação: ' + error.message);
+            }
+        }
+        
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `<div class="error">${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
+        
+        function logout() {
+            window.location.href = '/logout';
+        }
+        
+        // Enviar mensagem com Enter (Ctrl+Enter para quebra de linha)
+        document.getElementById('messageInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.ctrlKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

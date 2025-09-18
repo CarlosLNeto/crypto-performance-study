@@ -7,3 +7,5 @@ numpy
 psutil
 tabulate
 scipy
+flask
+werkzeug

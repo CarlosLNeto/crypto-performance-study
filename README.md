@@ -85,6 +85,26 @@ python atividade2/run_atividade2.py
 - 2 gráficos de performance
 - Análise de operações criptográficas
 
+### Chat Web com Assinatura Digital
+```bash
+python atividade2/run_chat.py
+```
+
+**Funcionalidades do Chat:**
+- Interface web moderna e responsiva
+- Sistema de login com 3 usuários pré-cadastrados
+- Chat em tempo real com assinatura digital
+- Verificação de integridade das mensagens
+- Estatísticas de uso em tempo real
+- Certificados gerados automaticamente no primeiro login
+
+**Usuários disponíveis:**
+- `carlos` / `123456` (Carlos Lavor Neto)
+- `eric` / `123456` (Eric Dias Perin)  
+- `alexandro` / `123456` (Alexandro Pantoja)
+
+**Acesse:** http://localhost:5000
+
 ### Execução Completa (Ambas as Atividades)
 ```bash
 python src/run_complete_study.py
