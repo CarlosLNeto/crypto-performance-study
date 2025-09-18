@@ -2,11 +2,11 @@
 
 ## Descrição
 
-Este projeto apresenta um estudo abrangente sobre criptografia aplicada, dividido em duas partes complementares:
+Este projeto apresenta um estudo abrangente sobre criptografia aplicada, dividido em duas atividades independentes:
 
-**Parte I:** Análise comparativa detalhada do desempenho computacional dos algoritmos de criptografia simétrica **AES**, **Blowfish** e **Twofish**, analisando métricas de CPU, memória, tempo de execução e throughput.
+**Atividade 1:** Análise comparativa detalhada do desempenho computacional dos algoritmos de criptografia simétrica **AES**, **Blowfish** e **Twofish**.
 
-**Parte II:** Desenvolvimento de uma aplicação prática de envio de mensagens com **assinatura digital**, implementando geração de certificados ad-hoc e mecanismos de verificação de autenticidade, integridade e não-repúdio.
+**Atividade 2:** Desenvolvimento de uma aplicação prática de envio de mensagens com **assinatura digital** e certificados ad-hoc.
 
 ## Autores
 
@@ -21,153 +21,149 @@ Este projeto apresenta um estudo abrangente sobre criptografia aplicada, dividid
 
 ```
 crypto-performance-study/
-├── src/                            # Código fonte
-│   ├── crypto_benchmark.py         # Benchmark algoritmos simétricos
-│   ├── analysis.py                 # Análises e visualizações - Parte I
-│   ├── digital_signature_app.py    # Aplicação de assinatura digital
-│   ├── signature_analysis.py       # Análise de performance - Parte II
+├── atividade1/                     # ATIVIDADE 1: Algoritmos Simétricos
+│   ├── src/
+│   │   ├── crypto_benchmark.py     # Benchmark dos algoritmos
+│   │   ├── analysis.py             # Análises e gráficos
+│   │   └── run_study.py           # Script original
+│   ├── data/
+│   │   └── benchmark_results.csv   # Resultados dos testes
+│   ├── results/
+│   │   ├── performance_comparison.png
+│   │   ├── throughput_analysis.png
+│   │   ├── scalability_analysis.png
+│   │   ├── correlation_heatmap.png
+│   │   └── summary_table.csv
+│   └── run_atividade1.py          # Script executável
+│
+├── atividade2/                     # ATIVIDADE 2: Assinatura Digital
+│   ├── src/
+│   │   ├── digital_signature_app.py    # Aplicação principal
+│   │   └── signature_analysis.py       # Análise de performance
+│   ├── data/
+│   │   └── signature_performance_results.csv
+│   ├── results/
+│   │   ├── signature_performance_analysis.png
+│   │   └── signature_operations_comparison.png
+│   ├── certificates/               # Certificados gerados
+│   ├── messages/                   # Mensagens assinadas
+│   └── run_atividade2.py          # Script executável
+│
+├── src/                            # Scripts integrados
 │   ├── report_generator.py         # Gerador de relatório
-│   ├── run_study.py               # Script Parte I
-│   └── run_complete_study.py      # Script completo integrado
-├── data/                           # Dados gerados
-│   ├── benchmark_results.csv       # Resultados - algoritmos simétricos
-│   └── signature_performance_results.csv  # Resultados - assinatura digital
-├── results/                        # Resultados e gráficos
-│   └── graficos/                  # Todas as visualizações
-├── certificates/                   # Certificados digitais gerados
-├── messages/                       # Mensagens assinadas
-├── docs/                          # Documentação
-│   └── relatorio_latex_abnt.tex   # Relatório integrado em LaTeX
-├── requirements.txt               # Dependências Python
-└── README.md                     # Este arquivo
+│   └── run_complete_study.py      # Execução completa
+├── docs/
+│   └── relatorio_latex_abnt.tex   # Relatório integrado
+├── requirements.txt
+└── README.md
 ```
 
-## Características do Estudo
-
-### Parte I: Algoritmos de Criptografia Simétrica
-
-**Algoritmos Analisados:**
-- **AES (Advanced Encryption Standard)**: 128, 192, 256 bits
-- **Blowfish**: 128, 256 bits  
-- **Twofish**: 128, 192, 256 bits
-
-**Métricas Coletadas:**
-- Tempo de execução (criptografia e descriptografia)
-- Uso de CPU (percentual)
-- Consumo de memória (MB)
-- Throughput (MB/s)
-- Análises estatísticas (média, desvio padrão, ANOVA)
-
-**Tamanhos de Dados Testados:**
-- 1 KB a 10 MB (5 tamanhos diferentes)
-
-### Parte II: Aplicação de Assinatura Digital
-
-**Funcionalidades Implementadas:**
-- Geração de certificados X.509 ad-hoc
-- Assinatura digital com RSA-PSS e SHA-256
-- Verificação de assinaturas e integridade
-- Detecção de alterações em mensagens
-- Armazenamento seguro de certificados (PKCS#12)
-
-**Métricas de Performance:**
-- Tempo de geração de certificados
-- Performance de assinatura por tamanho de mensagem
-- Performance de verificação
-- Throughput de operações criptográficas
-
-## Instalação e Execução
+## Execução das Atividades
 
 ### Pré-requisitos
-- Python 3.7 ou superior
-- pip (gerenciador de pacotes Python)
-
-### Passo 1: Instalar Dependências
 ```bash
 pip install -r requirements.txt
 ```
 
-### Passo 2: Executar Estudo Completo (Ambas as Partes)
+### Atividade 1: Análise de Algoritmos Simétricos
+```bash
+python atividade1/run_atividade1.py
+```
+
+**Resultados gerados:**
+- Benchmark de performance (AES, Blowfish, Twofish)
+- 4 gráficos comparativos
+- Análises estatísticas (ANOVA)
+- Dados em CSV
+
+### Atividade 2: Aplicação de Assinatura Digital
+```bash
+python atividade2/run_atividade2.py
+```
+
+**Resultados gerados:**
+- Certificados X.509 ad-hoc
+- Mensagens assinadas digitalmente
+- 2 gráficos de performance
+- Análise de operações criptográficas
+
+### Execução Completa (Ambas as Atividades)
 ```bash
 python src/run_complete_study.py
 ```
 
-### Execução Individual das Partes
+## Características das Atividades
 
-```bash
-# Apenas Parte I (Algoritmos Simétricos)
-python src/run_study.py
+### Atividade 1: Algoritmos de Criptografia Simétrica
 
-# Apenas demonstração da Parte II
-python src/digital_signature_app.py
+**Algoritmos Analisados:**
+- AES (128, 192, 256 bits)
+- Blowfish (128, 256 bits)
+- Twofish (128, 192, 256 bits)
 
-# Apenas análise de performance da Parte II
-python src/signature_analysis.py
-```
+**Métricas Coletadas:**
+- Tempo de execução
+- Uso de CPU e memória
+- Throughput (MB/s)
+- Análises estatísticas
 
-## Resultados Principais
+**Resultados Principais:**
+- AES: Melhor throughput (277.80 MB/s)
+- Blowfish: Menor consumo de recursos
+- Twofish: Performance intermediária
 
-### Parte I: Performance de Algoritmos Simétricos
-- **AES**: Melhor throughput médio (277.80 MB/s)
-- **Blowfish**: Menor consumo de recursos (155.48 MB/s)
-- **Twofish**: Performance intermediária (228.19 MB/s)
-- **40 configurações testadas** com 100 iterações cada
-- **Análise ANOVA** confirma diferenças não significativas (p > 0.05)
+### Atividade 2: Aplicação de Assinatura Digital
 
-### Parte II: Aplicação de Assinatura Digital
-- **100% de eficácia** na detecção de alterações
-- **Certificados X.509** auto-assinados funcionais
-- **RSA-PSS com SHA-256** para máxima segurança
-- **Performance escalável** para diferentes tamanhos de mensagem
+**Funcionalidades:**
+- Geração de certificados X.509 ad-hoc
+- Assinatura digital (RSA-PSS + SHA-256)
+- Verificação de integridade
+- Detecção de alterações (100% eficaz)
 
-## Metodologia
-
-### Parte I: Benchmarks de Algoritmos
-- **100 iterações por teste** para confiabilidade estatística
-- **Ambiente controlado** com limpeza de memória entre testes
-- **Dados aleatórios** criptograficamente seguros
-- **Medições precisas** de tempo, CPU e memória
-
-### Parte II: Desenvolvimento da Aplicação
-- **Certificados ad-hoc** eliminando necessidade de PKI
-- **Padrões criptográficos** modernos (RSA-2048, SHA-256, PSS)
-- **Testes de integridade** com detecção de alterações
-- **Análise de performance** das operações criptográficas
+**Características Técnicas:**
+- RSA 2048 bits
+- Certificados auto-assinados
+- Armazenamento PKCS#12
+- Formato JSON para mensagens
 
 ## Visualizações Geradas
 
-### Parte I (6 gráficos):
-- Comparação geral de performance
+### Atividade 1 (4 gráficos):
+- Comparação de performance geral
 - Análise de throughput
-- Escalabilidade por tamanho de dados
-- Matriz de correlação entre métricas
+- Escalabilidade por tamanho
+- Matriz de correlação
 
-### Parte II (2 gráficos):
-- Performance das operações de assinatura digital
-- Comparação entre assinatura e verificação
+### Atividade 2 (2 gráficos):
+- Performance das operações
+- Comparação assinatura vs verificação
 
 ## Documentação
 
 - **Relatório LaTeX Integrado**: Documento completo em formato ABNT
-- **8 Visualizações PNG**: Gráficos profissionais para inclusão no relatório
-- **Dados Estruturados**: Tabelas CSV com estatísticas detalhadas
-- **Código Documentado**: Implementação completa com comentários
+- **6 Visualizações PNG**: Gráficos profissionais
+- **Dados Estruturados**: Tabelas CSV com estatísticas
+- **Código Documentado**: Implementação completa
 
 ## Aplicações Práticas
 
-### Seleção de Algoritmos Simétricos
-- **AES**: Aplicações gerais com equilíbrio segurança/performance
+### Atividade 1: Seleção de Algoritmos
+- **AES**: Aplicações gerais (equilíbrio segurança/performance)
 - **Blowfish**: Sistemas com restrições de recursos
 - **Twofish**: Aplicações que priorizam segurança máxima
 
-### Sistema de Assinatura Digital
-- **Comunicações seguras** sem infraestrutura PKI complexa
-- **Verificação de integridade** de documentos e mensagens
-- **Autenticação** de remetentes em sistemas controlados
+### Atividade 2: Sistema de Autenticação
+- Comunicações seguras sem PKI complexa
+- Verificação de integridade de documentos
+- Autenticação de remetentes
+
+## Repositório
+
+**Link:** https://github.com/CarlosLNeto/crypto-performance-study.git
 
 ## Licença
 
-Este projeto é disponibilizado para fins acadêmicos e educacionais. Consulte os termos de uso das bibliotecas utilizadas para aplicações comerciais.
+Projeto desenvolvido para fins acadêmicos e educacionais.
 
 ---
 

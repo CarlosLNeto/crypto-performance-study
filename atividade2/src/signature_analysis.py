@@ -202,8 +202,8 @@ class SignaturePerformanceAnalyzer:
         df = pd.DataFrame(self.results)
         
         # Salvar resultados
-        df.to_csv('data/signature_performance_results.csv', index=False)
-        print(f"Resultados salvos em 'data/signature_performance_results.csv'")
+        df.to_csv('atividade2/data/signature_performance_results.csv', index=False)
+        print(f"Resultados salvos em 'atividade2/data/signature_performance_results.csv'")
         
         return df
     
@@ -287,7 +287,7 @@ class SignaturePerformanceAnalyzer:
                     f'{value:.2f}%', ha='center', va='bottom')
         
         plt.tight_layout()
-        plt.savefig('results/graficos/signature_performance_analysis.png', dpi=300, bbox_inches='tight')
+        plt.savefig('atividade2/results/signature_performance_analysis.png', dpi=300, bbox_inches='tight')
         plt.close()
         
         # 2. Gráfico de comparação de operações
@@ -332,10 +332,10 @@ class SignaturePerformanceAnalyzer:
         ax2.legend()
         
         plt.tight_layout()
-        plt.savefig('results/graficos/signature_operations_comparison.png', dpi=300, bbox_inches='tight')
+        plt.savefig('atividade2/results/signature_operations_comparison.png', dpi=300, bbox_inches='tight')
         plt.close()
         
-        print("✓ Visualizações salvas em results/graficos/")
+        print("✓ Visualizações salvas em atividade2/results/")
 
 def main():
     """Função principal"""

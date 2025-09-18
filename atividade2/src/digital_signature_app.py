@@ -102,23 +102,23 @@ class CertificateManager:
         )
         
         # Salvar arquivo
-        os.makedirs('certificates', exist_ok=True)
-        with open(f'certificates/{cert_id}.p12', 'wb') as f:
+        os.makedirs('atividade2/certificates', exist_ok=True)
+        with open(f'atividade2/certificates/{cert_id}.p12', 'wb') as f:
             f.write(p12)
         
         # Salvar certificado em PEM
-        with open(f'certificates/{cert_id}_cert.pem', 'wb') as f:
+        with open(f'atividade2/certificates/{cert_id}_cert.pem', 'wb') as f:
             f.write(cert.public_bytes(serialization.Encoding.PEM))
         
         # Salvar chave privada em PEM
-        with open(f'certificates/{cert_id}_key.pem', 'wb') as f:
+        with open(f'atividade2/certificates/{cert_id}_key.pem', 'wb') as f:
             f.write(private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.PKCS8,
                 encryption_algorithm=serialization.BestAvailableEncryption(password)
             ))
         
-        return f'certificates/{cert_id}.p12'
+        return f'atividade2/certificates/{cert_id}.p12'
 
 class DigitalSignatureApp:
     """Aplicação de assinatura digital de mensagens"""
@@ -252,8 +252,8 @@ class DigitalSignatureApp:
     def save_message_to_file(self, signed_message, filename):
         """Salva mensagem assinada em arquivo"""
         
-        os.makedirs('messages', exist_ok=True)
-        filepath = f'messages/{filename}'
+        os.makedirs('atividade2/messages', exist_ok=True)
+        filepath = f'atividade2/messages/{filename}'
         
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(signed_message, f, indent=2, ensure_ascii=False)

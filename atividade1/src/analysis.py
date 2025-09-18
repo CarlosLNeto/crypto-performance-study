@@ -20,7 +20,7 @@ plt.rcParams['grid.alpha'] = 0.3
 class CryptoAnalysis:
     def __init__(self, results_df):
         self.df = results_df
-        self.output_dir = 'results/graficos'
+        self.output_dir = 'atividade1/results'
         os.makedirs(self.output_dir, exist_ok=True)
         
         # Configurar estilo dos gráficos
@@ -320,10 +320,10 @@ ANÁLISE ESTATÍSTICA DOS ALGORITMOS DE CRIPTOGRAFIA
 def main():
     # Carregar resultados
     try:
-        df = pd.read_csv('data/benchmark_results.csv')
+        df = pd.read_csv('atividade1/data/benchmark_results.csv')
         print(f"Carregados {len(df)} resultados do benchmark")
     except FileNotFoundError:
-        print("Arquivo 'data/benchmark_results.csv' não encontrado. Execute primeiro o benchmark.")
+        print("Arquivo 'atividade1/data/benchmark_results.csv' não encontrado. Execute primeiro o benchmark.")
         return
     
     # Executar análise

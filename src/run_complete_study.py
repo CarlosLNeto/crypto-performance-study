@@ -54,7 +54,7 @@ def run_part1_symmetric_analysis():
     try:
         # Benchmark de algoritmos
         print("1. Executando benchmark de algoritmos...")
-        from src.crypto_benchmark import main as benchmark_main
+        from atividade1.src.crypto_benchmark import main as benchmark_main
         
         start_time = time.time()
         results_df = benchmark_main()
@@ -65,7 +65,7 @@ def run_part1_symmetric_analysis():
         
         # Análises e gráficos
         print("\n2. Gerando análises e gráficos...")
-        from src.analysis import main as analysis_main
+        from atividade1.src.analysis import main as analysis_main
         
         start_time = time.time()
         analysis_results = analysis_main()
@@ -87,7 +87,7 @@ def run_part2_digital_signature():
     try:
         # Demonstração da aplicação
         print("1. Executando demonstração da aplicação...")
-        from src.digital_signature_app import demonstrate_digital_signature
+        from atividade2.src.digital_signature_app import demonstrate_digital_signature
         
         start_time = time.time()
         demo_results = demonstrate_digital_signature()
@@ -97,7 +97,7 @@ def run_part2_digital_signature():
         
         # Análise de performance
         print("\n2. Analisando performance das operações...")
-        from src.signature_analysis import main as signature_analysis_main
+        from atividade2.src.signature_analysis import main as signature_analysis_main
         
         start_time = time.time()
         perf_results = signature_analysis_main()
@@ -118,19 +118,19 @@ def show_results_summary():
     
     files_to_check = [
         # Parte I - Algoritmos Simétricos
-        ('data/benchmark_results.csv', 'Dados de benchmark - algoritmos simétricos'),
-        ('results/graficos/performance_comparison.png', 'Comparação de performance'),
-        ('results/graficos/throughput_analysis.png', 'Análise de throughput'),
-        ('results/graficos/scalability_analysis.png', 'Análise de escalabilidade'),
-        ('results/graficos/correlation_heatmap.png', 'Heatmap de correlação'),
-        ('results/graficos/summary_table.csv', 'Tabela resumo - simétricos'),
+        ('atividade1/data/benchmark_results.csv', 'Dados de benchmark - algoritmos simétricos'),
+        ('atividade1/results/performance_comparison.png', 'Comparação de performance'),
+        ('atividade1/results/throughput_analysis.png', 'Análise de throughput'),
+        ('atividade1/results/scalability_analysis.png', 'Análise de escalabilidade'),
+        ('atividade1/results/correlation_heatmap.png', 'Heatmap de correlação'),
+        ('atividade1/results/summary_table.csv', 'Tabela resumo - simétricos'),
         
         # Parte II - Assinatura Digital
-        ('data/signature_performance_results.csv', 'Dados de performance - assinatura digital'),
-        ('results/graficos/signature_performance_analysis.png', 'Performance - assinatura digital'),
-        ('results/graficos/signature_operations_comparison.png', 'Comparação - operações de assinatura'),
-        ('certificates/', 'Certificados digitais gerados'),
-        ('messages/', 'Mensagens assinadas'),
+        ('atividade2/data/signature_performance_results.csv', 'Dados de performance - assinatura digital'),
+        ('atividade2/results/signature_performance_analysis.png', 'Performance - assinatura digital'),
+        ('atividade2/results/signature_operations_comparison.png', 'Comparação - operações de assinatura'),
+        ('atividade2/certificates/', 'Certificados digitais gerados'),
+        ('atividade2/messages/', 'Mensagens assinadas'),
         
         # Documentação
         ('docs/relatorio_latex_abnt.tex', 'Relatório técnico integrado (LaTeX)')
@@ -173,10 +173,12 @@ def main():
     
     print("\nPróximos passos:")
     print("1. Compile o relatório LaTeX integrado: docs/relatorio_latex_abnt.tex")
-    print("2. Examine todos os gráficos na pasta: results/graficos/")
-    print("3. Analise os dados de ambas as partes: data/")
-    print("4. Verifique os certificados e mensagens geradas")
-    print("5. Use todas as imagens PNG no Overleaf junto com o LaTeX")
+    print("2. Examine gráficos da Atividade 1: atividade1/results/")
+    print("3. Examine gráficos da Atividade 2: atividade2/results/")
+    print("4. Analise dados da Atividade 1: atividade1/data/")
+    print("5. Analise dados da Atividade 2: atividade2/data/")
+    print("6. Verifique certificados e mensagens: atividade2/certificates/ e atividade2/messages/")
+    print("7. Use todas as imagens PNG no Overleaf junto com o LaTeX")
 
 if __name__ == "__main__":
     main()
