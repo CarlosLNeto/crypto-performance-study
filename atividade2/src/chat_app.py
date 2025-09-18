@@ -15,7 +15,11 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from digital_signature_app import DigitalSignatureApp
 
-app = Flask(__name__)
+# Configurar Flask com caminhos corretos
+template_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates')
+static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
+
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.secret_key = 'crypto_chat_secret_key_2025'
 
 # Instância global da aplicação de assinatura
