@@ -25,14 +25,14 @@ def main():
     print("   • eric / 123456 (Eric Dias Perin)")
     print("   • alexandro / 123456 (Alexandro Pantoja)")
     print()
-    print("🌐 Acesse: http://localhost:5000")
+    print("🌐 Acesse: http://localhost:8080")
     print("="*60)
     print()
     
     try:
         # Importar e executar a aplicação Flask
         from atividade2.src.chat_app import app
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        app.run(debug=True, host='0.0.0.0', port=8080)
     except ImportError as e:
         print(f"❌ Erro de importação: {e}")
         print("Certifique-se de que todas as dependências estão instaladas:")

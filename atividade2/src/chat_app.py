@@ -233,7 +233,7 @@ if __name__ == '__main__':
     print("- carlos / 123456 (Carlos Lavor Neto)")
     print("- eric / 123456 (Eric Dias Perin)")
     print("- alexandro / 123456 (Alexandro Pantoja)")
-    print("\nAcesse: http://localhost:5000")
+    print("\nAcesse: http://localhost:8080")
     print("=====================================")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=8080)

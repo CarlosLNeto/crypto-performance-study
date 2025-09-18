@@ -103,7 +103,7 @@ python atividade2/run_chat.py
 - `eric` / `123456` (Eric Dias Perin)  
 - `alexandro` / `123456` (Alexandro Pantoja)
 
-**Acesse:** http://localhost:5000
+**Acesse:** http://localhost:8080
 
 ### Execução Completa (Ambas as Atividades)
 ```bash
