@@ -22,18 +22,18 @@
 \usepackage{listings}
 \usepackage{xcolor}
 
-% Configurações ABNT
+% Configuracoes ABNT
 \onehalfspacing
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{0pt}
 
-% Configuração de títulos
+% Configuracao de titulos
 \usepackage{titlesec}
 \titleformat{\section}{\normalfont\fontsize{12}{15}\bfseries\uppercase}{\thesection}{1em}{}
 \titleformat{\subsection}{\normalfont\fontsize{12}{15}\bfseries}{\thesubsection}{1em}{}
 \titleformat{\subsubsection}{\normalfont\fontsize{12}{15}\bfseries}{\thesubsubsection}{1em}{}
 
-% Configuração para código
+% Configuracao para codigo
 \lstset{
     basicstyle=\ttfamily\footnotesize,
     breaklines=true,
@@ -54,11 +54,11 @@
 
 {\fontsize{14}{16}\selectfont\bfseries\uppercase{Universidade do Estado do Amazonas}}\\
 {\fontsize{14}{16}\selectfont\bfseries\uppercase{Escola Superior de Tecnologia}}\\
-{\fontsize{14}{16}\selectfont\bfseries\uppercase{Curso de Engenharia de Computação}}\\
+{\fontsize{14}{16}\selectfont\bfseries\uppercase{Curso de Engenharia de Computacao}}\\
 
 \vspace{3cm}
 
-{\fontsize{14}{16}\selectfont\bfseries\uppercase{Estudo Comparativo de Algoritmos de Criptografia e Desenvolvimento de Aplicação de Assinatura Digital}}
+{\fontsize{14}{16}\selectfont\bfseries\uppercase{Estudo Comparativo de Algoritmos de Criptografia e Desenvolvimento de Aplicacao de Assinatura Digital}}
 
 \vspace{3cm}
 
@@ -72,10 +72,10 @@ Alexandro Pantoja\\
 \vspace{2cm}
 
 {\fontsize{12}{14}\selectfont
-Trabalho apresentado à disciplina de Tópicos Especiais em Computação IV como requisito parcial para avaliação acadêmica.
+Trabalho apresentado a disciplina de Topicos Especiais em Computacao IV como requisito parcial para avaliacao academica.
 
 \vspace{0.5cm}
-\textbf{Repositório do Projeto:}\\
+\textbf{Repositorio do Projeto:}\\
 \url{https://github.com/CarlosLNeto/crypto-performance-study.git}
 }
 
@@ -92,80 +92,80 @@ Manaus -- AM\\
 \newpage
 \section*{RESUMO}
 
-Este trabalho apresenta um estudo abrangente sobre criptografia aplicada, dividido em duas atividades complementares. A Atividade 1 consiste em uma análise comparativa de desempenho computacional entre três algoritmos de criptografia simétrica: Advanced Encryption Standard (AES), Blowfish e Twofish, avaliando métricas de CPU, memória, tempo de execução e throughput com 40 configurações testadas e 100 iterações cada. A Atividade 2 desenvolve uma aplicação prática de envio de mensagens com assinatura digital, implementando geração de certificados X.509 ad-hoc e verificação de autenticidade com RSA-PSS e SHA-256. Os resultados da Atividade 1 demonstram que o AES oferece o melhor throughput médio (277,80 MB/s), enquanto o Blowfish apresenta menor consumo de recursos (155,48 MB/s). Na Atividade 2, a aplicação demonstrou 100\% de eficácia na detecção de alterações, com tempos de geração de certificados de 79,7ms, assinatura de 0,98ms e verificação de 0,13ms. O trabalho contribui para o entendimento prático da criptografia moderna, fornecendo dados quantitativos para seleção de algoritmos e uma implementação funcional de infraestrutura de chave pública.
+Este trabalho apresenta um estudo abrangente sobre criptografia aplicada, dividido em duas atividades complementares. A Atividade 1 consiste em uma analise comparativa de desempenho computacional entre tres algoritmos de criptografia simetrica: Advanced Encryption Standard (AES), Blowfish e Twofish, avaliando metricas de CPU, memoria, tempo de execucao e throughput com 40 configuracoes testadas e 100 iteracoes cada. A Atividade 2 desenvolve uma aplicacao pratica de envio de mensagens com assinatura digital, implementando geracao de certificados X.509 ad-hoc e verificacao de autenticidade com RSA-PSS e SHA-256. Os resultados da Atividade 1 demonstram que o AES oferece o melhor throughput medio (277,80 MB/s), enquanto o Blowfish apresenta menor consumo de recursos (155,48 MB/s). Na Atividade 2, a aplicacao demonstrou 100\% de eficacia na deteccao de alteracoes, com tempos de geracao de certificados de 79,7ms, assinatura de 0,98ms e verificacao de 0,13ms. O trabalho contribui para o entendimento pratico da criptografia moderna, fornecendo dados quantitativos para selecao de algoritmos e uma implementacao funcional de infraestrutura de chave publica.
 
 \vspace{0.5cm}
-\noindent\textbf{Palavras-chave:} Criptografia. Algoritmos simétricos. Assinatura digital. Certificados digitais. Desempenho computacional. Segurança da informação.
+\noindent\textbf{Palavras-chave:} Criptografia. Algoritmos simetricos. Assinatura digital. Certificados digitais. Desempenho computacional. Seguranca da informacao.
 
-% SUMÁRIO
+% SUMARIO
 \newpage
 \tableofcontents
 
-% INTRODUÇÃO
+% INTRODUCAO
 \newpage
-\section{INTRODUÇÃO}
+\section{INTRODUCAO}
 
-A criptografia constitui um dos pilares fundamentais da segurança da informação moderna, desempenhando papel crucial na proteção de dados em diversas aplicações. Este trabalho aborda duas dimensões complementares da criptografia aplicada através de duas atividades distintas: a análise quantitativa de algoritmos de criptografia simétrica e o desenvolvimento de uma aplicação prática de assinatura digital.
+A criptografia constitui um dos pilares fundamentais da seguranca da informacao moderna, desempenhando papel crucial na protecao de dados em diversas aplicacoes. Este trabalho aborda duas dimensoes complementares da criptografia aplicada atraves de duas atividades distintas: a analise quantitativa de algoritmos de criptografia simetrica e o desenvolvimento de uma aplicacao pratica de assinatura digital.
 
-A primeira atividade foca na avaliação comparativa de performance dos algoritmos AES (Advanced Encryption Standard), Blowfish e Twofish, enquanto a segunda explora a implementação de mecanismos de autenticação e integridade através de assinaturas digitais com certificados gerados ad-hoc.
+A primeira atividade foca na avaliacao comparativa de performance dos algoritmos AES (Advanced Encryption Standard), Blowfish e Twofish, enquanto a segunda explora a implementacao de mecanismos de autenticacao e integridade atraves de assinaturas digitais com certificados gerados ad-hoc.
 
 \subsection{Objetivos}
 
 \subsubsection{Objetivo Geral}
 
-Realizar um estudo abrangente sobre criptografia aplicada, comparando o desempenho computacional de algoritmos simétricos e desenvolvendo uma aplicação funcional de assinatura digital com certificados ad-hoc.
+Realizar um estudo abrangente sobre criptografia aplicada, comparando o desempenho computacional de algoritmos simetricos e desenvolvendo uma aplicacao funcional de assinatura digital com certificados ad-hoc.
 
-\subsubsection{Objetivos Específicos}
+\subsubsection{Objetivos Especificos}
 
 \begin{enumerate}
-    \item \textbf{Atividade 1}: Implementar benchmarks automatizados para medição precisa de performance dos algoritmos AES, Blowfish e Twofish;
-    \item \textbf{Atividade 1}: Analisar o comportamento dos algoritmos com diferentes tamanhos de dados e configurações de chave;
-    \item \textbf{Atividade 2}: Desenvolver uma aplicação de envio de mensagens com assinatura digital;
-    \item \textbf{Atividade 2}: Implementar geração de certificados digitais X.509 ad-hoc;
-    \item Realizar análises estatísticas para validar a significância das diferenças observadas;
-    \item Gerar visualizações gráficas para facilitar a interpretação dos resultados;
-    \item Fornecer recomendações práticas baseadas nos resultados obtidos.
+    \item \textbf{Atividade 1}: Implementar benchmarks automatizados para medicao precisa de performance dos algoritmos AES, Blowfish e Twofish;
+    \item \textbf{Atividade 1}: Analisar o comportamento dos algoritmos com diferentes tamanhos de dados e configuracoes de chave;
+    \item \textbf{Atividade 2}: Desenvolver uma aplicacao de envio de mensagens com assinatura digital;
+    \item \textbf{Atividade 2}: Implementar geracao de certificados digitais X.509 ad-hoc;
+    \item Realizar analises estatisticas para validar a significancia das diferencas observadas;
+    \item Gerar visualizacoes graficas para facilitar a interpretacao dos resultados;
+    \item Fornecer recomendacoes praticas baseadas nos resultados obtidos.
 \end{enumerate}
 
-% REFERENCIAL TEÓRICO
-\section{REFERENCIAL TEÓRICO}
+% REFERENCIAL TEORICO
+\section{REFERENCIAL TEORICO}
 
-\subsection{Criptografia Simétrica}
+\subsection{Criptografia Simetrica}
 
-A criptografia simétrica utiliza a mesma chave para as operações de criptografia e descriptografia, oferecendo alta eficiência computacional para processamento de grandes volumes de dados.
+A criptografia simetrica utiliza a mesma chave para as operacoes de criptografia e descriptografia, oferecendo alta eficiencia computacional para processamento de grandes volumes de dados.
 
 \subsubsection{Advanced Encryption Standard (AES)}
 
-O AES é baseado na cifra Rijndael, adotado como padrão pelo NIST em 2001. Opera com blocos de 128 bits e suporta chaves de 128, 192 e 256 bits, sendo otimizado para implementação em hardware moderno.
+O AES e baseado na cifra Rijndael, adotado como padrao pelo NIST em 2001. Opera com blocos de 128 bits e suporta chaves de 128, 192 e 256 bits, sendo otimizado para implementacao em hardware moderno.
 
 \subsubsection{Blowfish}
 
-Desenvolvido por Bruce Schneier em 1993, opera com blocos de 64 bits e suporta chaves variáveis de 32 a 448 bits. É conhecido por sua velocidade e simplicidade de implementação.
+Desenvolvido por Bruce Schneier em 1993, opera com blocos de 64 bits e suporta chaves variaveis de 32 a 448 bits. E conhecido por sua velocidade e simplicidade de implementacao.
 
 \subsubsection{Twofish}
 
-Sucessor do Blowfish e finalista na competição do AES. Opera com blocos de 128 bits e suporta chaves de 128, 192 e 256 bits, oferecendo características de segurança avançadas.
+Sucessor do Blowfish e finalista na competicao do AES. Opera com blocos de 128 bits e suporta chaves de 128, 192 e 256 bits, oferecendo caracteristicas de seguranca avancadas.
 
-\subsection{Criptografia Assimétrica e Assinatura Digital}
+\subsection{Criptografia Assimetrica e Assinatura Digital}
 
-A criptografia assimétrica utiliza pares de chaves matematicamente relacionadas, possibilitando a implementação de assinaturas digitais que garantem autenticidade, integridade e não-repúdio.
+A criptografia assimetrica utiliza pares de chaves matematicamente relacionadas, possibilitando a implementacao de assinaturas digitais que garantem autenticidade, integridade e nao-repudio.
 
 \subsubsection{Algoritmo RSA}
 
-O RSA é baseado na dificuldade de fatoração de números inteiros grandes. Para assinaturas digitais, o processo envolve a criação de um hash da mensagem, que é então criptografado com a chave privada.
+O RSA e baseado na dificuldade de fatoracao de numeros inteiros grandes. Para assinaturas digitais, o processo envolve a criacao de um hash da mensagem, que e entao criptografado com a chave privada.
 
 \subsubsection{Certificados Digitais X.509}
 
-Os certificados digitais seguem o padrão X.509 e contêm informações como nome do titular, chave pública, período de validade e assinatura de uma autoridade certificadora.
+Os certificados digitais seguem o padrao X.509 e contem informacoes como nome do titular, chave publica, periodo de validade e assinatura de uma autoridade certificadora.
 
 % DESENVOLVIMENTO
 \section{DESENVOLVIMENTO}
 
-\section{ATIVIDADE 1: ANÁLISE DE ALGORITMOS DE CRIPTOGRAFIA SIMÉTRICA}
+\section{ATIVIDADE 1: ANALISE DE ALGORITMOS DE CRIPTOGRAFIA SIMETRICA}
 
 \subsection{Arquitetura do Sistema de Benchmark}
 
-O sistema foi desenvolvido em Python utilizando as bibliotecas \texttt{cryptography} e \texttt{pycryptodome}. A arquitetura modular permite medições precisas e isoladas de cada algoritmo.
+O sistema foi desenvolvido em Python utilizando as bibliotecas \texttt{cryptography} e \texttt{pycryptodome}. A arquitetura modular permite medicoes precisas e isoladas de cada algoritmo.
 
 \begin{lstlisting}[caption=Estrutura principal da classe CryptoBenchmark]
 class CryptoBenchmark:
@@ -176,37 +176,37 @@ class CryptoBenchmark:
     
     def measure_performance(self, encrypt_func, decrypt_func, data, algorithm, key_size):
         process = psutil.Process()
-        # Medições de baseline e execução dos testes
-        # Coleta de métricas de CPU, memória e tempo
+        # Medicoes de baseline e execucao dos testes
+        # Coleta de metricas de CPU, memoria e tempo
 \end{lstlisting}
 
-\subsection{Metodologia de Medição}
+\subsection{Metodologia de Medicao}
 
-Cada teste é executado 100 vezes para garantir confiabilidade estatística. O procedimento inclui:
+Cada teste e executado 100 vezes para garantir confiabilidade estatistica. O procedimento inclui:
 
 \begin{enumerate}
-    \item Geração de dados aleatórios criptograficamente seguros
-    \item Limpeza de memória entre execuções (\texttt{gc.collect()})
-    \item Medição de recursos antes e após cada operação
-    \item Cálculo de métricas estatísticas (média, desvio padrão)
+    \item Geracao de dados aleatorios criptograficamente seguros
+    \item Limpeza de memoria entre execucoes (\texttt{gc.collect()})
+    \item Medicao de recursos antes e apos cada operacao
+    \item Calculo de metricas estatisticas (media, desvio padrao)
 \end{enumerate}
 
-\subsection{Configurações de Teste}
+\subsection{Configuracoes de Teste}
 
-Os testes abrangem cinco tamanhos de dados (1KB a 10MB) e múltiplas configurações de chave:
+Os testes abrangem cinco tamanhos de dados (1KB a 10MB) e multiplas configuracoes de chave:
 \begin{itemize}
     \item AES: 128, 192, 256 bits
     \item Blowfish: 128, 256 bits
     \item Twofish: 128, 192, 256 bits
 \end{itemize}
 
-\section{ATIVIDADE 2: APLICAÇÃO DE ASSINATURA DIGITAL}
+\section{ATIVIDADE 2: APLICACAO DE ASSINATURA DIGITAL}
 
-\subsection{Arquitetura da Aplicação}
+\subsection{Arquitetura da Aplicacao}
 
-A aplicação foi estruturada em duas classes principais: \texttt{CertificateManager} para gerenciamento de certificados e \texttt{DigitalSignatureApp} para operações de assinatura e verificação.
+A aplicacao foi estruturada em duas classes principais: \texttt{CertificateManager} para gerenciamento de certificados e \texttt{DigitalSignatureApp} para operacoes de assinatura e verificacao.
 
-\begin{lstlisting}[caption=Geração de certificados ad-hoc]
+\begin{lstlisting}[caption=Geracao de certificados ad-hoc]
 def generate_certificate(self, common_name, email, organization="UEA"):
     # Gerar chave privada RSA 2048 bits
     private_key = rsa.generate_private_key(
@@ -226,35 +226,35 @@ def generate_certificate(self, common_name, email, organization="UEA"):
 
 \subsection{Processo de Assinatura Digital}
 
-O processo implementa o padrão PSS (Probabilistic Signature Scheme) com hash SHA-256:
+O processo implementa o padrao PSS (Probabilistic Signature Scheme) com hash SHA-256:
 
 \begin{enumerate}
-    \item Cálculo do hash SHA-256 da mensagem
+    \item Calculo do hash SHA-256 da mensagem
     \item Assinatura do hash com chave privada RSA
-    \item Codificação da assinatura em Base64
-    \item Criação da estrutura de mensagem assinada
+    \item Codificacao da assinatura em Base64
+    \item Criacao da estrutura de mensagem assinada
 \end{enumerate}
 
-\subsection{Verificação de Assinatura}
+\subsection{Verificacao de Assinatura}
 
-A verificação valida tanto a integridade da mensagem quanto a autenticidade do remetente através da comparação de hashes e verificação da assinatura com chave pública.
+A verificacao valida tanto a integridade da mensagem quanto a autenticidade do remetente atraves da comparacao de hashes e verificacao da assinatura com chave publica.
 
-% ANÁLISE DOS DADOS
-\section{ANÁLISE DOS DADOS}
+% ANALISE DOS DADOS
+\section{ANALISE DOS DADOS}
 
-\section{RESULTADOS DA ATIVIDADE 1: ALGORITMOS SIMÉTRICOS}
+\section{RESULTADOS DA ATIVIDADE 1: ALGORITMOS SIMETRICOS}
 
-\subsection{Visão Geral dos Testes}
+\subsection{Visao Geral dos Testes}
 
-Foram realizados 40 testes individuais, abrangendo 3 algoritmos com múltiplas configurações de chave e tamanhos de dados. Os resultados representam a média de 100 execuções para cada configuração.
+Foram realizados 40 testes individuais, abrangendo 3 algoritmos com multiplas configuracoes de chave e tamanhos de dados. Os resultados representam a media de 100 execucoes para cada configuracao.
 
 \begin{table}[H]
 \centering
-\caption{Resumo de Performance dos Algoritmos Simétricos}
+\caption{Resumo de Performance dos Algoritmos Simetricos}
 \label{tab:performance}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Algoritmo} & \textbf{Tempo Médio (s)} & \textbf{CPU Médio (\%)} & \textbf{Throughput (MB/s)} \\
+\textbf{Algoritmo} & \textbf{Tempo Medio (s)} & \textbf{CPU Medio (\%)} & \textbf{Throughput (MB/s)} \\
 \midrule
 AES & 0,005777 & 0,97 & 277,80 \\
 Blowfish & 0,010838 & 0,97 & 155,48 \\
@@ -263,177 +263,177 @@ Twofish & 0,006811 & 1,01 & 228,19 \\
 \end{tabular}
 \end{table}
 
-\subsection{Análise Estatística}
+\subsection{Analise Estatistica}
 
-A análise de variância (ANOVA) foi aplicada para verificar diferenças significativas:
+A analise de variancia (ANOVA) foi aplicada para verificar diferencas significativas:
 
 \begin{itemize}
-    \item \textbf{Tempo de Criptografia}: F-statistic = 0,4087, p-value = 0,6675 (não significativo)
-    \item \textbf{Uso de CPU}: F-statistic = 1,5926, p-value = 0,2170 (não significativo)
-    \item \textbf{Uso de Memória}: F-statistic = 1,1754, p-value = 0,3200 (não significativo)
+    \item \textbf{Tempo de Criptografia}: F-statistic = 0,4087, p-value = 0,6675 (nao significativo)
+    \item \textbf{Uso de CPU}: F-statistic = 1,5926, p-value = 0,2170 (nao significativo)
+    \item \textbf{Uso de Memoria}: F-statistic = 1,1754, p-value = 0,3200 (nao significativo)
 \end{itemize}
 
-Os resultados indicam que, estatisticamente, não há diferenças significativas entre os algoritmos ao nível de significância $\alpha$ = 0,05.
+Os resultados indicam que, estatisticamente, nao ha diferencas significativas entre os algoritmos ao nivel de significancia $\alpha$ = 0,05.
 
-\subsection{Visualizações dos Resultados da Atividade 1}
+\subsection{Visualizacoes dos Resultados da Atividade 1}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{atividade1/results/performance_comparison.png}
-\caption{Atividade 1 - Comparação de Performance dos Algoritmos de Criptografia}
+\includegraphics[width=\textwidth]{performance_comparison.png}
+\caption{Atividade 1 - Comparacao de Performance dos Algoritmos de Criptografia}
 \label{fig:performance1}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{atividade1/results/throughput_analysis.png}
-\caption{Atividade 1 - Análise de Throughput por Algoritmo}
+\includegraphics[width=\textwidth]{throughput_analysis.png}
+\caption{Atividade 1 - Analise de Throughput por Algoritmo}
 \label{fig:throughput1}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{atividade1/results/scalability_analysis.png}
-\caption{Atividade 1 - Análise de Escalabilidade por Tamanho de Dados}
+\includegraphics[width=\textwidth]{scalability_analysis.png}
+\caption{Atividade 1 - Analise de Escalabilidade por Tamanho de Dados}
 \label{fig:scalability1}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{atividade1/results/correlation_heatmap.png}
-\caption{Atividade 1 - Matriz de Correlação entre Métricas de Performance}
+\includegraphics[width=0.8\textwidth]{correlation_heatmap.png}
+\caption{Atividade 1 - Matriz de Correlacao entre Metricas de Performance}
 \label{fig:correlation1}
 \end{figure}
 
 \section{RESULTADOS DA ATIVIDADE 2: ASSINATURA DIGITAL}
 
-\subsection{Demonstração Funcional}
+\subsection{Demonstracao Funcional}
 
-A aplicação foi testada com sucesso, demonstrando capacidade de:
+A aplicacao foi testada com sucesso, demonstrando capacidade de:
 
 \begin{itemize}
     \item Gerar certificados X.509 auto-assinados (2 certificados criados)
     \item Assinar mensagens digitalmente com RSA-PSS (1 mensagem processada)
-    \item Verificar assinaturas e detectar alterações (2 verificações realizadas)
+    \item Verificar assinaturas e detectar alteracoes (2 verificacoes realizadas)
     \item Armazenar mensagens em formato JSON
-    \item Taxa de detecção de alterações: 100\%
+    \item Taxa de deteccao de alteracoes: 100\%
 \end{itemize}
 
-\subsection{Métricas de Performance Detalhadas}
+\subsection{Metricas de Performance Detalhadas}
 
-Com base nos dados coletados durante a execução da Atividade 2, foram obtidas as seguintes métricas:
+Com base nos dados coletados durante a execucao da Atividade 2, foram obtidas as seguintes metricas:
 
 \begin{table}[H]
 \centering
-\caption{Performance das Operações de Assinatura Digital}
+\caption{Performance das Operacoes de Assinatura Digital}
 \label{tab:signature_performance}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Operação} & \textbf{Tempo Médio (ms)} & \textbf{CPU Médio (\%)} & \textbf{Throughput (chars/s)} \\
+\textbf{Operacao} & \textbf{Tempo Medio (ms)} & \textbf{CPU Medio (\%)} & \textbf{Throughput (chars/s)} \\
 \midrule
-Geração de Certificados & 79,70 & 3,09 & -- \\
+Geracao de Certificados & 79,70 & 3,09 & -- \\
 Assinatura (100 chars) & 0,93 & 2,19 & 107.003 \\
 Assinatura (1000 chars) & 0,99 & 4,34 & 1.011.661 \\
 Assinatura (10000 chars) & 0,98 & 2,35 & 10.196.841 \\
-Verificação (100 chars) & 0,13 & 2,74 & 747.566 \\
-Verificação (1000 chars) & 0,13 & 2,64 & 7.925.029 \\
+Verificacao (100 chars) & 0,13 & 2,74 & 747.566 \\
+Verificacao (1000 chars) & 0,13 & 2,64 & 7.925.029 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsection{Análise de Escalabilidade}
+\subsection{Analise de Escalabilidade}
 
 Os resultados mostram que:
 
 \begin{itemize}
-    \item \textbf{Geração de Certificados}: Operação mais custosa (79,7ms), executada uma vez por usuário
+    \item \textbf{Geracao de Certificados}: Operacao mais custosa (79,7ms), executada uma vez por usuario
     \item \textbf{Assinatura}: Tempo constante (~0,98ms) independente do tamanho da mensagem
-    \item \textbf{Verificação}: Aproximadamente 7x mais rápida que assinatura (0,13ms)
+    \item \textbf{Verificacao}: Aproximadamente 7x mais rapida que assinatura (0,13ms)
     \item \textbf{Throughput}: Cresce linearmente com o tamanho da mensagem
 \end{itemize}
 
-\subsection{Visualizações dos Resultados da Atividade 2}
+\subsection{Visualizacoes dos Resultados da Atividade 2}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{atividade2/results/signature_performance_analysis.png}
-\caption{Atividade 2 - Análise de Performance das Operações de Assinatura Digital}
+\includegraphics[width=\textwidth]{signature_performance_analysis.png}
+\caption{Atividade 2 - Analise de Performance das Operacoes de Assinatura Digital}
 \label{fig:signature_performance}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{atividade2/results/signature_operations_comparison.png}
-\caption{Atividade 2 - Comparação de Performance: Assinatura vs Verificação}
+\includegraphics[width=\textwidth]{signature_operations_comparison.png}
+\caption{Atividade 2 - Comparacao de Performance: Assinatura vs Verificacao}
 \label{fig:signature_comparison}
 \end{figure}
 
 \subsection{Teste de Integridade}
 
-O sistema demonstrou 100\% de eficácia na detecção de alterações em mensagens:
+O sistema demonstrou 100\% de eficacia na deteccao de alteracoes em mensagens:
 
 \begin{itemize}
-    \item \textbf{Mensagem Original}: Assinatura válida confirmada
-    \item \textbf{Mensagem Alterada}: Detecção imediata da alteração
-    \item \textbf{Mecanismo}: Comparação de hash SHA-256
-    \item \textbf{Resultado}: "Hash da mensagem não confere"
+    \item \textbf{Mensagem Original}: Assinatura valida confirmada
+    \item \textbf{Mensagem Alterada}: Deteccao imediata da alteracao
+    \item \textbf{Mecanismo}: Comparacao de hash SHA-256
+    \item \textbf{Resultado}: "Hash da mensagem nao confere"
 \end{itemize}
 
-% DISCUSSÃO
-\section{DISCUSSÃO}
+% DISCUSSAO
+\section{DISCUSSAO}
 
-\subsection{Interpretação dos Resultados - Atividade 1}
+\subsection{Interpretacao dos Resultados - Atividade 1}
 
-Os resultados da análise comparativa revelam que o AES mantém sua posição como algoritmo de referência, oferecendo throughput superior de 277,80 MB/s. O Blowfish demonstrou eficiência em cenários específicos com menor consumo de recursos, enquanto o Twofish apresentou performance intermediária com overhead adicional devido à sua complexidade estrutural.
+Os resultados da analise comparativa revelam que o AES mantem sua posicao como algoritmo de referencia, oferecendo throughput superior de 277,80 MB/s. O Blowfish demonstrou eficiencia em cenarios especificos com menor consumo de recursos, enquanto o Twofish apresentou performance intermediaria com overhead adicional devido a sua complexidade estrutural.
 
-\subsection{Interpretação dos Resultados - Atividade 2}
+\subsection{Interpretacao dos Resultados - Atividade 2}
 
-A aplicação de assinatura digital demonstrou excelente performance operacional:
+A aplicacao de assinatura digital demonstrou excelente performance operacional:
 
 \begin{itemize}
-    \item \textbf{Eficiência}: Verificação 7x mais rápida que assinatura
+    \item \textbf{Eficiencia}: Verificacao 7x mais rapida que assinatura
     \item \textbf{Escalabilidade}: Throughput cresce linearmente com tamanho da mensagem
-    \item \textbf{Confiabilidade}: 100\% de detecção de alterações
+    \item \textbf{Confiabilidade}: 100\% de deteccao de alteracoes
     \item \textbf{Praticidade}: Certificados ad-hoc eliminam necessidade de PKI
 \end{itemize}
 
-\subsection{Comparação entre Atividades}
+\subsection{Comparacao entre Atividades}
 
-Enquanto a Atividade 1 foca em throughput de dados (MB/s), a Atividade 2 prioriza operações de autenticação (operações/s). Os algoritmos simétricos da Atividade 1 processam grandes volumes rapidamente, enquanto as operações assimétricas da Atividade 2 garantem autenticidade com overhead aceitável.
+Enquanto a Atividade 1 foca em throughput de dados (MB/s), a Atividade 2 prioriza operacoes de autenticacao (operacoes/s). Os algoritmos simetricos da Atividade 1 processam grandes volumes rapidamente, enquanto as operacoes assimetricas da Atividade 2 garantem autenticidade com overhead aceitavel.
 
-\subsection{Implicações Práticas}
+\subsection{Implicacoes Praticas}
 
-\subsubsection{Seleção de Algoritmos Simétricos (Atividade 1)}
+\subsubsection{Selecao de Algoritmos Simetricos (Atividade 1)}
 
-Para aplicações que priorizam velocidade, o AES é a escolha optimal. Para sistemas com restrições de recursos, o Blowfish é adequado. O Twofish deve ser reservado para aplicações que exigem segurança máxima.
+Para aplicacoes que priorizam velocidade, o AES e a escolha optimal. Para sistemas com restricoes de recursos, o Blowfish e adequado. O Twofish deve ser reservado para aplicacoes que exigem seguranca maxima.
 
-\subsubsection{Implementação de Assinatura Digital (Atividade 2)}
+\subsubsection{Implementacao de Assinatura Digital (Atividade 2)}
 
-A aplicação desenvolvida demonstra viabilidade de sistemas de assinatura digital sem infraestrutura complexa de PKI, adequada para ambientes controlados com excelente relação custo-benefício.
+A aplicacao desenvolvida demonstra viabilidade de sistemas de assinatura digital sem infraestrutura complexa de PKI, adequada para ambientes controlados com excelente relacao custo-beneficio.
 
-% CONCLUSÃO
-\section{CONCLUSÃO}
+% CONCLUSAO
+\section{CONCLUSAO}
 
-Este trabalho apresentou um estudo abrangente sobre criptografia aplicada através de duas atividades complementares, fornecendo contribuições significativas para o entendimento prático da criptografia moderna.
+Este trabalho apresentou um estudo abrangente sobre criptografia aplicada atraves de duas atividades complementares, fornecendo contribuicoes significativas para o entendimento pratico da criptografia moderna.
 
-\subsection{Contribuições da Atividade 1}
+\subsection{Contribuicoes da Atividade 1}
 
-A análise comparativa dos algoritmos AES, Blowfish e Twofish confirmou que o AES mantém sua posição como algoritmo de referência com throughput superior de 277,80 MB/s. Os 40 testes realizados com 100 iterações cada forneceram base estatística sólida para as recomendações apresentadas.
+A analise comparativa dos algoritmos AES, Blowfish e Twofish confirmou que o AES mantem sua posicao como algoritmo de referencia com throughput superior de 277,80 MB/s. Os 40 testes realizados com 100 iteracoes cada forneceram base estatistica solida para as recomendacoes apresentadas.
 
-\subsection{Contribuições da Atividade 2}
+\subsection{Contribuicoes da Atividade 2}
 
-A aplicação de assinatura digital desenvolvida demonstrou eficácia completa na garantia de autenticidade, integridade e não-repúdio. Com tempos de operação de 79,7ms para geração de certificados, 0,98ms para assinatura e 0,13ms para verificação, o sistema apresenta performance adequada para uso prático.
+A aplicacao de assinatura digital desenvolvida demonstrou eficacia completa na garantia de autenticidade, integridade e nao-repudio. Com tempos de operacao de 79,7ms para geracao de certificados, 0,98ms para assinatura e 0,13ms para verificacao, o sistema apresenta performance adequada para uso pratico.
 
-\subsection{Integração dos Resultados}
+\subsection{Integracao dos Resultados}
 
-As duas atividades se complementam fornecendo uma visão completa da criptografia aplicada: algoritmos simétricos para processamento eficiente de dados e assinaturas digitais para garantia de autenticidade. A metodologia rigorosa empregada e a documentação detalhada garantem a reprodutibilidade dos resultados.
+As duas atividades se complementam fornecendo uma visao completa da criptografia aplicada: algoritmos simetricos para processamento eficiente de dados e assinaturas digitais para garantia de autenticidade. A metodologia rigorosa empregada e a documentacao detalhada garantem a reprodutibilidade dos resultados.
 
 \subsection{Trabalhos Futuros}
 
-Recomenda-se a extensão deste estudo para incluir análise de consumo energético, testes em diferentes arquiteturas de hardware e implementação de mecanismos de revogação de certificados para a aplicação de assinatura digital.
+Recomenda-se a extensao deste estudo para incluir analise de consumo energetico, testes em diferentes arquiteturas de hardware e implementacao de mecanismos de revogacao de certificados para a aplicacao de assinatura digital.
 
-% REFERÊNCIAS
-\section{REFERÊNCIAS BIBLIOGRÁFICAS}
+% REFERENCIAS
+\section{REFERENCIAS BIBLIOGRAFICAS}
 
 DAEMEN, Joan; RIJMEN, Vincent. \textbf{The Design of Rijndael: AES - The Advanced Encryption Standard}. Berlin: Springer-Verlag, 2002.
 
@@ -451,7 +451,7 @@ RIVEST, Ronald L.; SHAMIR, Adi; ADLEMAN, Leonard. A Method for Obtaining Digital
 
 SCHNEIER, Bruce. \textbf{Applied Cryptography: Protocols, Algorithms, and Source Code in C}. 2nd ed. New York: John Wiley \& Sons, 1996.
 
-SCHNEIER, Bruce et al. \textbf{Twofish: A 128-Bit Block Cipher}. 1998. Disponível em: \url{https://www.schneier.com/academic/twofish/}. Acesso em: 18 set. 2025.
+SCHNEIER, Bruce et al. \textbf{Twofish: A 128-Bit Block Cipher}. 1998. Disponivel em: \url{https://www.schneier.com/academic/twofish/}. Acesso em: 18 set. 2025.
 
 STALLINGS, William. \textbf{Cryptography and Network Security: Principles and Practice}. 7th ed. Boston: Pearson, 2017.
 
