@@ -133,7 +133,7 @@ def show_results_summary():
         ('atividade2/messages/', 'Mensagens assinadas'),
         
         # Documentação
-        ('docs/relatorio_latex_abnt.tex', 'Relatório técnico integrado (LaTeX)')
+        ('relatorio_latex_abnt.tex', 'Relatório técnico integrado (LaTeX)')
     ]
     
     for filename, description in files_to_check:
@@ -172,7 +172,7 @@ def main():
     print("="*80)
     
     print("\nPróximos passos:")
-    print("1. Compile o relatório LaTeX integrado: docs/relatorio_latex_abnt.tex")
+    print("1. Compile o relatório LaTeX integrado: relatorio_latex_abnt.tex")
     print("2. Examine gráficos da Atividade 1: atividade1/results/")
     print("3. Examine gráficos da Atividade 2: atividade2/results/")
     print("4. Analise dados da Atividade 1: atividade1/data/")

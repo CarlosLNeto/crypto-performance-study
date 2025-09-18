@@ -1,0 +1,10 @@
+{
+  "message": "Prezado Eric,\n    \nEste é um teste da aplicação de assinatura digital desenvolvida para a disciplina de Tópicos Especiais em Computação IV.\n\nA mensagem está sendo assinada digitalmente para garantir:\n- Autenticidade: Confirma que a mensagem foi enviada por mim\n- Integridade: Garante que a mensagem não foi alterada\n- Não-repúdio: Impede que eu negue ter enviado a mensagem\n\nAtenciosamente,\nCarlos Lavor Neto",
+  "signature": "mK9PQP6D7nq3oKMvPtet04TMGH7n2joyCdPxK+zCuSAqVqTcqL4jutj/H5rSXy86eOiF2B3SfUEkGlfjZTIla8dtZXTrJ2I3S2dzViUb+ve0yU2uaWNMEHmn6B576Yh0eMN7L+C1W+Tcr810fnMbkF5ad8hstTE7s7SHIAr+Wj+kIdbEGUi37Xz+OQDkBF4EJA8ce9QdpxapM31qBT73Alx6KFsiY7ISUeiEzbonwS3A4DlN973bsIA6+5zjLG76u4rAqdhundVY5jVCeY+PbR+dqJ5sUQ+2J6gwTNt5YlkbAgaWtgD7tq0GotKhmJD0hr+gJDC+p39t1o7rZjGyTw==",
+  "sender_cert_id": "4dc586fc",
+  "sender_name": "Carlos Lavor Neto",
+  "sender_email": "carlos.neto@uea.edu.br",
+  "timestamp": "2025-09-18T09:22:19.131288",
+  "message_hash": "GTufAs9I2Ecx3B9TQp1+VBJ6c7TmId06xMMgPgh/J0k=",
+  "recipient_email": "eric.perin@uea.edu.br"
+}

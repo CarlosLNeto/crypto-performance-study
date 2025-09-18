@@ -50,10 +50,8 @@ crypto-performance-study/
 │   └── run_atividade2.py          # Script executável
 │
 ├── src/                            # Scripts integrados
-│   ├── report_generator.py         # Gerador de relatório
 │   └── run_complete_study.py      # Execução completa
-├── docs/
-│   └── relatorio_latex_abnt.tex   # Relatório integrado
+├── relatorio_latex_abnt.tex       # Relatório técnico integrado
 ├── requirements.txt
 └── README.md
 ```
