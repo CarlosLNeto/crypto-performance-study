@@ -1,0 +1,9 @@
+cryptography
+pycryptodome
+matplotlib
+seaborn
+pandas
+numpy
+psutil
+tabulate
+scipy
