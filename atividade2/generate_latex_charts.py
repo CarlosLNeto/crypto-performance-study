@@ -34,6 +34,10 @@ def generate_chat_metrics_charts():
     
     print(f"📊 Gerando gráficos com {len(df)} métricas reais do chat...")
     
+    # Preparar dados de tempo
+    df['timestamp'] = pd.to_datetime(df['timestamp'])
+    df['time_from_start'] = (df['timestamp'] - df['timestamp'].min()).dt.total_seconds()
+    
     # Configurar estilo para LaTeX
     plt.rcParams.update({
         'font.size': 12,
@@ -50,8 +54,6 @@ def generate_chat_metrics_charts():
     fig, axes = plt.subplots(2, 2, figsize=(14, 12))
     
     # Timeline de uso
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df['time_from_start'] = (df['timestamp'] - df['timestamp'].min()).dt.total_seconds()
     
     if not sign_data.empty:
         axes[0,0].scatter(sign_data['time_from_start'], sign_data['time'] * 1000, 
@@ -152,8 +154,7 @@ def create_latex_charts(df):
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     
     # Repetir os gráficos principais com estilo LaTeX
-    df['timestamp'] = pd.to_datetime(df['timestamp'])
-    df['time_from_start'] = (df['timestamp'] - df['timestamp'].min()).dt.total_seconds()
+    # (timestamp já foi processado na função principal)
     
     if not sign_data.empty:
         axes[0,0].plot(sign_data['time_from_start'], sign_data['time'] * 1000, 
