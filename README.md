@@ -113,10 +113,11 @@ python atividade2/generate_latex_charts.py
 **Métricas Coletadas Durante Uso Real:**
 - Tempo de assinatura por mensagem real
 - Tempo de verificação por mensagem real
-- Tamanho real das mensagens enviadas
+- Tamanho real das mensagens (caracteres e bytes)
 - Performance por usuário real
 - Taxa de sucesso das operações
 - Timeline de uso do sistema
+- Análise de eficiência computacional (chars/ms)
 
 **Resultados gerados:**
 - Sistema de chat funcional em tempo real
@@ -172,7 +173,8 @@ python src/run_complete_study.py
 - Certificados PKCS#12 com senha
 - Armazenamento seguro de certificados
 - Coleta de métricas de performance em tempo real
-- Análise robusta de throughput e latência
+- Análise detalhada de throughput e latência
+- Métricas de tamanho em caracteres e bytes
 
 **Métricas de Performance Coletadas:**
 - Tempo de assinatura (usuário único): ~63ms (média)
