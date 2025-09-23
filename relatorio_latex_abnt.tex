@@ -556,33 +556,6 @@ Adicionalmente, o sistema gera:
     \item \textbf{chat\_stress\_results.csv}: Resultados do teste de stress
 \end{itemize}
 
-\subsection{Resultados da Atividade 2}
-
-A coleta de dados foi realizada durante uma semana de uso intensivo do sistema de chat, resultando em uma amostra robusta de 591 operações criptográficas distribuídas entre três usuários do sistema.
-
-\textbf{Amostra Coletada:}
-\begin{itemize}
-    \item \textbf{Volume Total}: 591 operações criptográficas
-    \item \textbf{Operações de Assinatura}: 234 mensagens assinadas
-    \item \textbf{Operações de Verificação}: 357 verificações realizadas
-    \item \textbf{Período de Coleta}: 7 dias consecutivos de uso real
-    \item \textbf{Usuários Participantes}: 3 usuários ativos (carlos, eric, alexandro)
-    \item \textbf{Sessões de Chat}: 14-28 sessões distribuídas ao longo da semana
-\end{itemize}
-
-\textbf{Resultados de Performance Obtidos:}
-\begin{itemize}
-    \item \textbf{Tempo Médio de Assinatura}: 76,21ms ($\sigma$ = 23,42ms)
-    \item \textbf{Tempo Médio de Verificação}: 1,26ms ($\sigma$ = 0,45ms)
-    \item \textbf{Taxa de Sucesso}: 100\% para todas as operações
-    \item \textbf{Eficiência de Verificação}: 60x mais rápida que assinatura
-    \item \textbf{Throughput de Assinatura}: 13,1 operações/segundo
-    \item \textbf{Throughput de Verificação}: 793,7 operações/segundo
-\end{itemize}
-
-\textbf{Análise Estatística:}
-A distribuição dos tempos de assinatura seguiu um padrão gaussiano com correlação positiva entre o tamanho da mensagem e o tempo de processamento (r = 0,87). As operações de verificação apresentaram baixa variabilidade, indicando estabilidade do algoritmo RSA-PSS para validação de assinaturas.
-
 \subsection{Segurança Implementada}
 
 As medidas de segurança incluem:
@@ -767,30 +740,6 @@ A coleta de dados foi realizada durante uma semana de uso intensivo do sistema d
     \item \textbf{Eficiência de Verificação}: 60x mais rápida que assinatura
 \end{itemize}
 
-\subsection{Visualizacoes dos Resultados da Atividade 2}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{chat_performance_analysis.png}
-\caption{Atividade 2 - Análise de Performance com 591 Operações Reais de Chat}
-\label{fig:atividade2_performance}
-\end{figure}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{chat_operations_comparison.png}
-\caption{Atividade 2 - Comparação Estatística: Assinatura vs Verificação (Dados Reais)}
-\label{fig:atividade2_comparison}
-\end{figure}
-
-\subsection{Interpretacao dos Resultados - Atividade 2}
-
-A aplicacao de assinatura digital demonstrou excelente performance operacional com tempos de assinatura adequados para uso em tempo real e verificação praticamente instantânea.
-
-\subsection{Contribuicoes da Atividade 2}
-
-A aplicacao desenvolvida demonstrou eficacia completa na garantia de autenticidade e integridade, com performance adequada para uso pratico em sistemas de chat corporativo.
-
 \section{RESULTADOS E ANALISE - ATIVIDADE 2}
 
 \subsection{Demonstracao Funcional}
@@ -818,8 +767,6 @@ A interface web permite demonstracao interativa com:
     \item \textbf{Estatisticas dinamicas}: Contadores em tempo real
     \item \textbf{Acesso via navegador}: http://localhost:8080
 \end{itemize}
-
-\subsection{Metricas de Performance Detalhadas}
 
 \subsection{Metricas de Performance Detalhadas}
 
