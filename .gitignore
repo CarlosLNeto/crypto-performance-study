@@ -1,43 +1,37 @@
-# Python
+# Arquivos de certificados (dados de teste)
+atividade2/certificates/
+certificates/
+
+# Arquivos de dados temporários
+*.p12
+*.pem
+*.key
+*.crt
+
+# Cache Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
-# Virtual Environment
+# Ambientes virtuais
 venv/
 env/
 ENV/
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# Sistema
 .DS_Store
 Thumbs.db
 
 # Logs
 *.log
 
-# Temporary files
+# Arquivos temporários
 *.tmp
 *.temp

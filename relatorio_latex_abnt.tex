@@ -236,29 +236,366 @@ Os testes abrangem cinco tamanhos de dados (1KB a 10MB) e multiplas configuracoe
     \item Twofish: 128, 192, 256 bits
 \end{itemize}
 
-\section{ATIVIDADE 2: APLICACAO DE ASSINATURA DIGITAL}
+\subsection{Resultados da Atividade 1}
 
-\subsection{Arquitetura da Aplicacao}
+Os resultados demonstram que o AES oferece o melhor throughput medio (277,80 MB/s), enquanto o Blowfish apresenta menor consumo de recursos. A analise estatistica ANOVA indica que nao ha diferencas significativas entre os algoritmos ao nivel de significancia $\\alpha$ = 0,05.
 
-A aplicacao foi estruturada em duas classes principais: \texttt{CertificateManager} para gerenciamento de certificados e \texttt{DigitalSignatureApp} para operacoes de assinatura e verificacao.
+\section{ATIVIDADE 2: SISTEMA DE CHAT COM ASSINATURA DIGITAL}
 
-\begin{lstlisting}[caption=Geracao de certificados ad-hoc]
-def generate_certificate(self, common_name, email, organization="UEA"):
-    # Gerar chave privada RSA 2048 bits
+\subsection{Arquitetura do Sistema}
+
+O sistema de chat foi desenvolvido com arquitetura cliente-servidor utilizando Flask e WebSocket para comunicacao em tempo real. A aplicacao integra tres componentes principais:
+
+\begin{itemize}
+    \item \textbf{Backend}: Servidor Flask com SocketIO para WebSocket
+    \item \textbf{Frontend}: Interface web responsiva com JavaScript
+    \item \textbf{Criptografia}: Sistema de assinatura digital RSA-PSS
+\end{itemize}
+
+\begin{lstlisting}[caption=Estrutura da aplicacao de chat]
+class CertificateManager:
+    def generate_certificate(self, username, common_name):
+        # Gerar chave privada RSA 2048 bits
+        private_key = rsa.generate_private_key(
+            public_exponent=65537, key_size=2048)
+        
+        # Criar certificado X.509 auto-assinado
+        cert = x509.CertificateBuilder().subject_name(
+            subject).issuer_name(issuer)
+\end{lstlisting}
+
+\subsection{Geracao de Certificados Ad-hoc}
+
+O sistema implementa geracao automatica de certificados X.509 auto-assinados para cada usuario no primeiro login. Os certificados utilizam:
+
+\begin{itemize}
+    \item \textbf{Algoritmo}: RSA 2048 bits
+    \item \textbf{Hash}: SHA-256
+    \item \textbf{Validade}: 365 dias
+    \item \textbf{Formato}: PKCS\#12 com senha
+\end{itemize}
+
+\begin{lstlisting}[caption=Processo de geracao de certificado]
+def generate_certificate(self, username, common_name):
     private_key = rsa.generate_private_key(
-        public_exponent=65537,
-        key_size=2048
-    )
+        public_exponent=65537, key_size=2048)
     
-    # Criar certificado X.509 auto-assinado
+    subject = issuer = x509.Name([
+        x509.NameAttribute(NameOID.COUNTRY_NAME, "BR"),
+        x509.NameAttribute(NameOID.ORGANIZATION_NAME, "UEA"),
+        x509.NameAttribute(NameOID.COMMON_NAME, common_name),
+    ])
+    
     cert = x509.CertificateBuilder().subject_name(subject)
-        .issuer_name(issuer)
-        .public_key(private_key.public_key())
-        .serial_number(x509.random_serial_number())
         .not_valid_before(datetime.utcnow())
         .not_valid_after(datetime.utcnow() + timedelta(days=365))
         .sign(private_key, hashes.SHA256())
 \end{lstlisting}
+
+\subsection{Sistema de Assinatura Digital}
+
+Cada mensagem enviada no chat é automaticamente assinada digitalmente utilizando o algoritmo RSA-PSS com hash SHA-256. O processo garante:
+
+\begin{itemize}
+    \item \textbf{Autenticidade}: Verificacao da identidade do remetente
+    \item \textbf{Integridade}: Deteccao de alteracoes na mensagem
+    \item \textbf{Nao-repudio}: Impossibilidade de negar o envio
+\end{itemize}
+
+\begin{lstlisting}[caption=Assinatura de mensagem]
+def sign_message(self, username, message):
+    message_bytes = message.encode('utf-8')
+    signature = private_key.sign(
+        message_bytes,
+        padding.PSS(
+            mgf=padding.MGF1(hashes.SHA256()),
+            salt_length=padding.PSS.MAX_LENGTH),
+        hashes.SHA256())
+    
+    return {
+        'message': message,
+        'signature': signature.hex(),
+        'certificate': cert.public_bytes(serialization.Encoding.PEM),
+        'timestamp': datetime.now().isoformat()
+    }
+\end{lstlisting}
+
+\subsection{Comunicacao em Tempo Real com WebSocket}
+
+A implementacao utiliza Flask-SocketIO para comunicacao bidirecional em tempo real:
+
+\begin{itemize}
+    \item \textbf{Conexao}: Estabelecimento automatico via WebSocket
+    \item \textbf{Salas}: Sistema de rooms para broadcast de mensagens
+    \item \textbf{Eventos}: Tratamento de entrada/saida de usuarios
+    \item \textbf{Estatisticas}: Atualizacao em tempo real de metricas
+\end{itemize}
+
+\begin{lstlisting}[caption=Eventos WebSocket principais]
+@socketio.on('connect')
+def on_connect():
+    join_room('chat')
+    chat_stats['active_users'].add(session['username'])
+    emit('user_joined', user_data, room='chat')
+
+@socketio.on('send_message')
+def handle_message(data):
+    signed_message = message_signer.sign_message(username, message)
+    is_valid = message_signer.verify_message(signed_message)
+    emit('new_message', message_data, room='chat')
+\end{lstlisting}
+
+\subsection{Interface de Usuário}
+
+O frontend implementa uma interface moderna e responsiva com:
+
+\begin{itemize}
+    \item \textbf{Design}: Layout responsivo com CSS Grid/Flexbox
+    \item \textbf{Autenticacao}: Sistema de login com usuarios pre-cadastrados
+    \item \textbf{Chat}: Area de mensagens com scroll automatico
+    \item \textbf{Sidebar}: Painel de estatisticas e usuarios online
+    \item \textbf{Indicadores}: Status de verificacao das mensagens
+\end{itemize}
+
+\subsection{Aplicacao Web de Chat em Tempo Real}
+
+O sistema de chat web implementa uma solucao completa de comunicacao segura com as seguintes caracteristicas:
+
+\subsubsection{Arquitetura do Sistema}
+
+\begin{itemize}
+    \item \textbf{Backend}: Servidor Flask com extensao SocketIO
+    \item \textbf{Frontend}: Interface HTML5 com JavaScript para WebSocket
+    \item \textbf{Banco de Dados}: Sistema de sessoes em memoria
+    \item \textbf{Criptografia}: RSA-PSS com SHA-256 integrado
+\end{itemize}
+
+\begin{lstlisting}[caption=Configuracao do servidor Flask com WebSocket]
+app = Flask(__name__, template_folder='../templates')
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+@socketio.on('connect')
+def on_connect():
+    join_room('chat')
+    chat_stats['active_users'].add(session['username'])
+    emit('user_joined', user_data, room='chat')
+\end{lstlisting}
+
+\subsubsection{Fluxo de Funcionamento}
+
+O sistema opera seguindo este fluxo:
+
+\begin{enumerate}
+    \item \textbf{Autenticacao}: Usuario acessa /login e insere credenciais
+    \item \textbf{Geracao de Certificado}: Sistema cria certificado X.509 automaticamente
+    \item \textbf{Conexao WebSocket}: Cliente estabelece conexao bidirecional
+    \item \textbf{Envio de Mensagem}: Usuario digita mensagem na interface
+    \item \textbf{Assinatura Automatica}: Sistema assina mensagem com chave privada
+    \item \textbf{Broadcast}: Mensagem assinada e enviada para todos os usuarios
+    \item \textbf{Verificacao}: Cada cliente verifica assinatura automaticamente
+    \item \textbf{Exibicao}: Mensagem exibida com status de verificacao
+\end{enumerate}
+
+\begin{lstlisting}[caption=Processamento de mensagem no chat]
+@socketio.on('send_message')
+def handle_message(data):
+    username = session['username']
+    message = data['message']
+    
+    # Assinar mensagem automaticamente
+    signed_message = message_signer.sign_message(username, message)
+    
+    # Verificar assinatura
+    is_valid = message_signer.verify_message(signed_message)
+    
+    # Broadcast para todos os usuarios
+    emit('new_message', {
+        'username': username,
+        'message': message,
+        'verified': is_valid
+    }, room='chat')
+\end{lstlisting}
+
+\subsection{Sistema de Analise de Performance}
+
+O script de analise implementa um sistema robusto de medicao de performance:
+
+\subsubsection{Metodologias de Teste}
+
+\begin{enumerate}
+    \item \textbf{Benchmark Sequencial}: 50 iteracoes por tamanho
+    \item \textbf{Benchmark Concorrente}: 5 usuarios simultaneos
+    \item \textbf{Teste de Stress}: 30 segundos de operacoes continuas
+\end{enumerate}
+
+\begin{lstlisting}[caption=Implementacao do teste concorrente]
+with ThreadPoolExecutor(max_workers=concurrent_users) as executor:
+    futures = [executor.submit(concurrent_sign, i) 
+              for i in range(concurrent_users)]
+    concurrent_times = []
+    for future in futures:
+        concurrent_times.extend(future.result())
+\end{lstlisting}
+
+\subsubsection{Resultados Obtidos}
+
+\begin{itemize}
+    \item \textbf{Assinatura}: Tempo medio de 62ms
+    \item \textbf{Verificacao}: Tempo medio de 0.09ms
+    \item \textbf{Throughput de Assinatura}: 63 KB/s
+    \item \textbf{Throughput de Verificacao}: 41.824 MB/s
+\end{itemize}
+
+Foi desenvolvido um sistema abrangente de análise de performance que inclui:
+
+\begin{itemize}
+    \item \textbf{Benchmark Sequencial}: Testes com diferentes tamanhos de mensagem
+    \item \textbf{Benchmark Concorrente}: Simulacao de multiplos usuarios simultaneos
+    \item \textbf{Teste de Stress}: Operacoes continuas por periodo determinado
+    \item \textbf{Metricas Coletadas}: Tempo, CPU, memoria, throughput
+\end{itemize}
+
+\begin{lstlisting}[caption=Benchmark de operações concorrentes]
+def benchmark_signing_operations(self, message_sizes, iterations=100, 
+                               concurrent_users=5):
+    with ThreadPoolExecutor(max_workers=concurrent_users) as executor:
+        futures = [executor.submit(concurrent_sign, i) 
+                  for i in range(concurrent_users)]
+        concurrent_times = []
+        for future in futures:
+            concurrent_times.extend(future.result())
+\end{lstlisting}
+
+\subsection{Funcionalidades Implementadas}
+
+O sistema de chat oferece as seguintes funcionalidades:
+
+\begin{enumerate}
+    \item \textbf{Autenticacao Segura}: Login com usuarios pre-cadastrados
+    \item \textbf{Geracao Automatica de Certificados}: Criacao no primeiro acesso
+    \item \textbf{Chat em Tempo Real}: Comunicacao via WebSocket
+    \item \textbf{Assinatura Automatica}: Todas as mensagens sao assinadas
+    \item \textbf{Verificacao de Integridade}: Validacao automatica das assinaturas
+    \item \textbf{Estatisticas em Tempo Real}: Metricas de uso atualizadas
+    \item \textbf{Interface Responsiva}: Compativel com dispositivos moveis
+    \item \textbf{Indicadores Visuais}: Status de verificacao das mensagens
+\end{enumerate}
+
+\subsection{Usuários Pré-cadastrados}
+
+O sistema inclui tres usuarios para demonstracao:
+
+\begin{itemize}
+    \item \textbf{carlos/123456}: Carlos Lavor Neto
+    \item \textbf{eric/123456}: Eric Dias Perin
+    \item \textbf{alexandro/123456}: Alexandro Pantoja
+\end{itemize}
+
+\subsection{Utilizacao das Metricas do Chat}
+
+As metricas coletadas durante o funcionamento do chat sao utilizadas para:
+
+\begin{enumerate}
+    \item \textbf{Analise de Performance em Tempo Real}
+    \begin{itemize}
+        \item Monitoramento continuo das operacoes criptograficas
+        \item Deteccao de degradacao de performance
+        \item Alertas automaticos para anomalias
+    \end{itemize}
+    
+    \item \textbf{Monitoramento de Qualidade do Servico}
+    \begin{itemize}
+        \item Validacao de SLA (Service Level Agreement)
+        \item Medicao de tempos de resposta
+        \item Garantia de disponibilidade do sistema
+    \end{itemize}
+    
+    \item \textbf{Otimizacao de Recursos do Sistema}
+    \begin{itemize}
+        \item Identificacao de gargalos computacionais
+        \item Analise de uso de CPU e memoria
+        \item Planejamento de capacidade
+    \end{itemize}
+    
+    \item \textbf{Validacao da Escalabilidade}
+    \begin{itemize}
+        \item Comportamento com multiplos usuarios simultaneos
+        \item Analise de concorrencia
+        \item Limites de capacidade do sistema
+    \end{itemize}
+    
+    \item \textbf{Documentacao Academica e Tecnica}
+    \begin{itemize}
+        \item Evidencias empiricas para pesquisa
+        \item Comparacao com outros sistemas
+        \item Validacao de hipoteses teoricas
+    \end{itemize}
+\end{enumerate}
+
+\begin{lstlisting}[caption=Script para geracao de graficos LaTeX]
+# Gerar graficos otimizados para LaTeX
+python atividade2/generate_latex_charts.py
+
+# Arquivos gerados:
+# - chat_metrics_latex.png (4 subgraficos)
+# - chat_statistics_latex.png (estatisticas resumo)
+# - metrics_table_latex.tex (tabela LaTeX)
+\end{lstlisting}
+
+O sistema de analise produz automaticamente 4 graficos de performance:
+
+\begin{enumerate}
+    \item \textbf{chat\_performance\_analysis.png}: Analise principal com 4 subgraficos
+    \begin{itemize}
+        \item Tempo de assinatura por tamanho (sequencial vs concorrente)
+        \item Throughput por tamanho de mensagem
+        \item Distribuicao de tempos de operacao
+        \item Timeline do teste de stress
+    \end{itemize}
+    
+    \item \textbf{chat\_operations\_comparison.png}: Comparacao de operacoes
+    \begin{itemize}
+        \item Box plot comparativo de tempos
+        \item Performance por usuario no teste de stress
+    \end{itemize}
+    
+    \item \textbf{signature\_performance\_analysis.png}: Analise detalhada de assinatura
+    
+    \item \textbf{signature\_operations\_comparison.png}: Comparacao detalhada de operacoes
+\end{enumerate}
+
+Adicionalmente, o sistema gera:
+\begin{itemize}
+    \item \textbf{performance\_statistics.csv}: Tabela com estatisticas resumo
+    \item \textbf{chat\_performance\_results.csv}: Dados completos do benchmark
+    \item \textbf{chat\_stress\_results.csv}: Resultados do teste de stress
+\end{itemize}
+
+\subsection{Resultados da Atividade 2}
+
+Os testes da aplicacao de chat demonstraram:
+
+\begin{itemize}
+    \item \textbf{Eficacia}: 100\% de deteccao de alteracoes em mensagens
+    \item \textbf{Performance de Assinatura}: Tempo medio de 177,52ms com desvio de 141,50ms
+    \item \textbf{Performance de Verificacao}: Tempo medio de 0,09ms com desvio de 0,02ms
+    \item \textbf{Throughput de Assinatura}: 39,94 KB/s
+    \item \textbf{Throughput de Verificacao}: 41.823,63 KB/s
+    \item \textbf{Escalabilidade}: Performance estavel com 5 usuarios simultaneos
+    \item \textbf{Estabilidade}: Operacao continua por 30 segundos sem degradacao
+\end{itemize}
+
+\subsection{Segurança Implementada}
+
+As medidas de segurança incluem:
+
+\begin{itemize}
+    \item \textbf{Certificados X.509}: Padrao internacional para PKI
+    \item \textbf{RSA-PSS}: Esquema de assinatura probabilistica
+    \item \textbf{SHA-256}: Hash criptografico seguro
+    \item \textbf{Sessoes Flask}: Gerenciamento seguro de estado
+    \item \textbf{Validacao Automatica}: Verificacao de todas as assinaturas
+\end{itemize}
 
 \subsection{Processo de Assinatura Digital}
 
@@ -331,9 +668,9 @@ def send_message():
 % ANALISE DOS DADOS
 \section{ANALISE DOS DADOS}
 
-\section{RESULTADOS DA ATIVIDADE 1: ALGORITMOS SIMETRICOS}
+\section{RESULTADOS E ANALISE DOS DADOS}
 
-\subsection{Visao Geral dos Testes}
+\subsection{Visao Geral dos Testes da Atividade 1}
 
 Foram realizados 40 testes individuais, abrangendo 3 algoritmos com multiplas configuracoes de chave e tamanhos de dados. Os resultados representam a media de 100 execucoes para cada configuracao.
 

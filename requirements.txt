@@ -9,3 +9,5 @@ tabulate
 scipy
 flask
 werkzeug
+flask-socketio
+python-socketio

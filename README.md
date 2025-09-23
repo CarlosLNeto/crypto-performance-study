@@ -36,18 +36,26 @@ crypto-performance-study/
 │   │   └── summary_table.csv
 │   └── run_atividade1.py          # Script executável
 │
-├── atividade2/                     # ATIVIDADE 2: Assinatura Digital
+├── atividade2/                     # ATIVIDADE 2: Chat com Assinatura Digital
 │   ├── src/
-│   │   ├── digital_signature_app.py    # Aplicação principal
-│   │   └── signature_analysis.py       # Análise de performance
+│   │   ├── chat_app.py             # Aplicação de chat com WebSocket
+│   │   └── performance_analysis.py # Análise de performance do chat
+│   ├── templates/
+│   │   ├── login.html              # Interface de login
+│   │   └── chat.html               # Interface do chat
 │   ├── data/
-│   │   └── signature_performance_results.csv
+│   │   ├── chat_performance_results.csv
+│   │   └── chat_stress_results.csv
 │   ├── results/
-│   │   ├── signature_performance_analysis.png
-│   │   └── signature_operations_comparison.png
-│   ├── certificates/               # Certificados gerados
-│   ├── messages/                   # Mensagens assinadas
-│   └── run_atividade2.py          # Script executável
+│   │   ├── chat_performance_analysis.png
+│   │   ├── chat_operations_comparison.png
+│   │   ├── chat_metrics_latex.png
+│   │   ├── chat_statistics_latex.png
+│   │   └── chat_metrics_table_latex.tex
+│   ├── certificates/               # Certificados gerados automaticamente
+│   ├── run_chat.py                 # Script do chat
+│   ├── run_performance_analysis.py # Script de análise
+│   └── generate_latex_charts.py    # Gráficos para LaTeX
 │
 ├── src/                            # Scripts integrados
 │   └── run_complete_study.py      # Execução completa
@@ -74,36 +82,29 @@ python atividade1/run_atividade1.py
 - Análises estatísticas (ANOVA)
 - Dados em CSV
 
-### Atividade 2: Aplicação de Assinatura Digital
+### Atividade 2: Sistema de Chat com Assinatura Digital
+
+**Roteiro de Execução:**
+
 ```bash
-python atividade2/run_atividade2.py
+# 1. Executar o chat e enviar mensagens
+python atividade2/run_chat.py
+# (Acesse http://localhost:8081, faça login, envie mensagens, depois Ctrl+C)
+
+# 2. Gerar gráficos com dados reais coletados
+python atividade2/generate_latex_charts.py
 ```
+
+**Sistema de Coleta:**
+- ✅ **Métricas Reais**: Coleta automática durante uso do chat
+- ✅ **Dados Reais**: Apenas mensagens reais enviadas pelos usuários
+- ✅ **Sem Simulação**: Análise baseada exclusivamente em uso real
 
 **Resultados gerados:**
-- Certificados X.509 ad-hoc
-- Mensagens assinadas digitalmente
-- 2 gráficos de performance
-- Análise de operações criptográficas
-
-### Chat Web com Assinatura Digital
-```bash
-python atividade2/run_chat.py
-```
-
-**Funcionalidades do Chat:**
-- Interface web moderna e responsiva
-- Sistema de login com 3 usuários pré-cadastrados
-- Chat em tempo real com assinatura digital
-- Verificação de integridade das mensagens
-- Estatísticas de uso em tempo real
-- Certificados gerados automaticamente no primeiro login
-
-**Usuários disponíveis:**
-- `carlos` / `123456` (Carlos Lavor Neto)
-- `eric` / `123456` (Eric Dias Perin)  
-- `alexandro` / `123456` (Alexandro Pantoja)
-
-**Acesse:** http://localhost:8080
+- Sistema de chat em tempo real com WebSocket
+- Certificados X.509 gerados automaticamente
+- 4 gráficos baseados em métricas reais + 1 tabela LaTeX
+- Análise de operações criptográficas reais
 
 ### Execução Completa (Ambas as Atividades)
 ```bash
@@ -130,19 +131,39 @@ python src/run_complete_study.py
 - Blowfish: Menor consumo de recursos
 - Twofish: Performance intermediária
 
-### Atividade 2: Aplicação de Assinatura Digital
+### Atividade 2: Sistema de Chat com Assinatura Digital
 
-**Funcionalidades:**
-- Geração de certificados X.509 ad-hoc
-- Assinatura digital (RSA-PSS + SHA-256)
-- Verificação de integridade
-- Detecção de alterações (100% eficaz)
+**Arquitetura Implementada:**
+- **Backend**: Flask + SocketIO para WebSocket
+- **Frontend**: Interface web responsiva com JavaScript
+- **Criptografia**: RSA-PSS + SHA-256 para assinatura digital
+- **Certificados**: X.509 auto-assinados gerados automaticamente
+
+**Funcionalidades Avançadas:**
+- Comunicação bidirecional em tempo real via WebSocket
+- Assinatura automática de todas as mensagens
+- Verificação de integridade em tempo real
+- Sistema de salas (rooms) para broadcast
+- Estatísticas dinâmicas de uso
+- Indicadores visuais de status de verificação
+- Painel lateral com usuários online
+- Interface responsiva para dispositivos móveis
 
 **Características Técnicas:**
-- RSA 2048 bits
-- Certificados auto-assinados
-- Armazenamento PKCS#12
-- Formato JSON para mensagens
+- RSA 2048 bits para geração de chaves
+- Certificados PKCS#12 com senha
+- Armazenamento seguro de certificados
+- Coleta de métricas de performance em tempo real
+- Análise robusta de throughput e latência
+
+**Métricas de Performance Coletadas:**
+- Tempo de assinatura (usuário único): ~63ms (média)
+- Tempo de assinatura (multiusuário): ~180ms (média)
+- Tempo de verificação: ~0.10ms (média)
+- Throughput de assinatura: ~6.62 KB/s (único), ~2.65 KB/s (multi)
+- Throughput de verificação: ~4.217 MB/s
+- Escalabilidade: Degradação de 2.8x com múltiplos usuários
+- Teste de stress com 5 usuários simultâneos por 30s
 
 ## Visualizações Geradas
 
@@ -152,9 +173,12 @@ python src/run_complete_study.py
 - Escalabilidade por tamanho
 - Matriz de correlação
 
-### Atividade 2 (2 gráficos):
-- Performance das operações
-- Comparação assinatura vs verificação
+### Atividade 2 (4 gráficos + 1 tabela LaTeX):
+- Performance das operações do chat (chat_performance_analysis.png)
+- Comparação de operações do chat (chat_operations_comparison.png)
+- Métricas para LaTeX (chat_metrics_latex.png)
+- Estatísticas para LaTeX (chat_statistics_latex.png)
+- Tabela LaTeX (chat_metrics_table_latex.tex)
 
 ## Documentação
 

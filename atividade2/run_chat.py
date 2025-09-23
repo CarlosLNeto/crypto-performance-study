@@ -6,39 +6,48 @@ Script para executar o Chat Web com Assinatura Digital
 import sys
 import os
 
-# Adicionar path para importar módulos
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Garantir que estamos no diretório correto
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_dir)
 
-def main():
-    print("="*60)
-    print("CHAT WEB COM ASSINATURA DIGITAL - ATIVIDADE 2")
-    print("="*60)
-    print()
-    print("🔐 Sistema de Chat Seguro com:")
-    print("   • Autenticação de usuários")
-    print("   • Certificados X.509 ad-hoc")
-    print("   • Assinatura digital RSA-PSS + SHA-256")
+sys.path.append(os.path.join(script_dir, 'src'))
+
+# Criar diretórios necessários no diretório da atividade2
+os.makedirs('certificates', exist_ok=True)
+os.makedirs('data', exist_ok=True)
+os.makedirs('results', exist_ok=True)
+
+from chat_app import app, socketio
+
+if __name__ == '__main__':
+    print("🔐 Chat Seguro com Assinatura Digital e WebSocket")
+    print("=" * 60)
+    print("🚀 Funcionalidades:")
+    print("   • Comunicação em tempo real via WebSocket")
+    print("   • Assinatura digital automática (RSA-PSS + SHA-256)")
     print("   • Verificação de integridade em tempo real")
+    print("   • Certificados X.509 gerados automaticamente")
+    print("   • Interface responsiva e moderna")
+    print("   • Estatísticas de uso em tempo real")
     print()
     print("👥 Usuários disponíveis:")
     print("   • carlos / 123456 (Carlos Lavor Neto)")
     print("   • eric / 123456 (Eric Dias Perin)")
     print("   • alexandro / 123456 (Alexandro Pantoja)")
     print()
-    print("🌐 Acesse: http://localhost:8080")
-    print("="*60)
-    print()
+    print("🌐 Acesse: http://localhost:8081")
+    print("=" * 60)
     
     try:
-        # Importar e executar a aplicação Flask
-        from atividade2.src.chat_app import app
-        app.run(debug=True, host='0.0.0.0', port=8080)
-    except ImportError as e:
-        print(f"❌ Erro de importação: {e}")
-        print("Certifique-se de que todas as dependências estão instaladas:")
-        print("pip install -r requirements.txt")
+        socketio.run(app, host='0.0.0.0', port=8081, debug=False, allow_unsafe_werkzeug=True)
+    except KeyboardInterrupt:
+        print("\n👋 Chat encerrado pelo usuário")
+        # Salvar métricas finais
+        from chat_app import save_metrics_to_file
+        save_metrics_to_file()
+        print("📊 Métricas do chat salvas em data/real_chat_metrics.csv")
+        print("\n👋 Chat encerrado pelo usuário")
     except Exception as e:
-        print(f"❌ Erro ao executar aplicação: {e}")
-
-if __name__ == "__main__":
-    main()
+        print(f"\n❌ Erro ao iniciar o chat: {e}")
+        print("💡 Certifique-se de que as dependências estão instaladas:")
+        print("   pip install flask flask-socketio cryptography")

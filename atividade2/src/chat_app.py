@@ -1,243 +1,372 @@
 #!/usr/bin/env python3
 """
-Chat Web com Assinatura Digital
-Frontend para demonstração da aplicação de assinatura digital
+Chat Web com Assinatura Digital e WebSocket
+Implementa comunicação em tempo real com autenticação e integridade
 """
 
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
-from werkzeug.security import generate_password_hash, check_password_hash
-import json
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import os
+import json
+import uuid
+from datetime import datetime, timedelta
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives.serialization import pkcs12
+from cryptography import x509
+from cryptography.x509.oid import NameOID
+import hashlib
+import time
+import psutil
+import threading
+import csv
 from datetime import datetime
-import sys
 
-# Adicionar path para importar módulos
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from digital_signature_app import DigitalSignatureApp
+# Dados globais para coleta de métricas
+chat_metrics = []
+metrics_lock = threading.Lock()
 
-# Configurar Flask com caminhos corretos
-template_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates')
-static_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
+def save_chat_metric(operation, username, message_size, time_taken, success=True):
+    """Salva métrica de uso real do chat"""
+    with metrics_lock:
+        metric = {
+            'timestamp': datetime.now().isoformat(),
+            'operation': operation,
+            'username': username,
+            'message_size': message_size,
+            'time': time_taken,
+            'success': success,
+            'test_type': 'real_chat_usage',
+            'scenario': 'real_user'
+        }
+        chat_metrics.append(metric)
+        
+        # Salvar em arquivo a cada 10 métricas
+        if len(chat_metrics) % 10 == 0:
+            save_metrics_to_file()
 
-app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
-app.secret_key = 'crypto_chat_secret_key_2025'
+def save_metrics_to_file():
+    """Salva métricas em arquivo CSV"""
+    script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_dir = os.path.join(script_dir, 'data')
+    os.makedirs(data_dir, exist_ok=True)
+    
+    filepath = os.path.join(data_dir, 'real_chat_metrics.csv')
+    
+    if chat_metrics:
+        with open(filepath, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=['timestamp', 'operation', 'username', 
+                                                 'message_size', 'time', 'success', 
+                                                 'test_type', 'scenario'])
+            writer.writeheader()
+            writer.writerows(chat_metrics)
 
-# Instância global da aplicação de assinatura
-signature_app = DigitalSignatureApp()
+class CertificateManager:
+    """Gerenciador de certificados digitais ad-hoc"""
+    
+    def __init__(self, cert_dir="certificates"):
+        # Garantir que o diretório seja relativo ao diretório da atividade2
+        script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.cert_dir = os.path.join(script_dir, cert_dir)
+        os.makedirs(self.cert_dir, exist_ok=True)
+    
+    def generate_certificate(self, username, common_name):
+        """Gera certificado X.509 auto-assinado"""
+        private_key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048
+        )
+        
+        subject = issuer = x509.Name([
+            x509.NameAttribute(NameOID.COUNTRY_NAME, "BR"),
+            x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "AM"),
+            x509.NameAttribute(NameOID.LOCALITY_NAME, "Manaus"),
+            x509.NameAttribute(NameOID.ORGANIZATION_NAME, "UEA"),
+            x509.NameAttribute(NameOID.COMMON_NAME, common_name),
+        ])
+        
+        cert = x509.CertificateBuilder().subject_name(
+            subject
+        ).issuer_name(
+            issuer
+        ).public_key(
+            private_key.public_key()
+        ).serial_number(
+            x509.random_serial_number()
+        ).not_valid_before(
+            datetime.utcnow()
+        ).not_valid_after(
+            datetime.utcnow() + timedelta(days=365)
+        ).add_extension(
+            x509.SubjectAlternativeName([
+                x509.DNSName("localhost"),
+            ]),
+            critical=False,
+        ).sign(private_key, hashes.SHA256())
+        
+        # Salvar certificado e chave
+        cert_path = os.path.join(self.cert_dir, f"{username}.p12")
+        with open(cert_path, "wb") as f:
+            f.write(pkcs12.serialize_key_and_certificates(
+                b"password", private_key, cert, None,
+                serialization.BestAvailableEncryption(b"password")
+            ))
+        
+        return cert, private_key
 
-# Banco de dados simples em memória
-users_db = {
-    'carlos': {
-        'password': generate_password_hash('123456'),
-        'name': 'Carlos Lavor Neto',
-        'email': 'carlos.neto@uea.edu.br',
-        'cert_id': None
-    },
-    'eric': {
-        'password': generate_password_hash('123456'),
-        'name': 'Eric Dias Perin',
-        'email': 'eric.perin@uea.edu.br',
-        'cert_id': None
-    },
-    'alexandro': {
-        'password': generate_password_hash('123456'),
-        'name': 'Alexandro Pantoja',
-        'email': 'alexandro.pantoja@uea.edu.br',
-        'cert_id': None
-    }
+class MessageSigner:
+    """Assinador de mensagens digitais"""
+    
+    def __init__(self, cert_manager):
+        self.cert_manager = cert_manager
+        self.performance_data = []
+    
+    def sign_message(self, username, message):
+        """Assina mensagem digitalmente"""
+        start_time = time.time()
+        start_cpu = psutil.cpu_percent()
+        start_memory = psutil.virtual_memory().used
+        
+        cert_path = os.path.join(self.cert_manager.cert_dir, f"{username}.p12")
+        
+        if not os.path.exists(cert_path):
+            return None
+        
+        with open(cert_path, "rb") as f:
+            private_key, cert, _ = pkcs12.load_key_and_certificates(
+                f.read(), b"password"
+            )
+        
+        message_bytes = message.encode('utf-8')
+        signature = private_key.sign(
+            message_bytes,
+            padding.PSS(
+                mgf=padding.MGF1(hashes.SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+        
+        end_time = time.time()
+        end_cpu = psutil.cpu_percent()
+        end_memory = psutil.virtual_memory().used
+        time_taken = end_time - start_time
+        
+        # Coletar métricas do sistema
+        self.performance_data.append({
+            'operation': 'sign',
+            'time': time_taken,
+            'cpu_usage': end_cpu - start_cpu,
+            'memory_usage': end_memory - start_memory,
+            'message_size': len(message_bytes),
+            'timestamp': datetime.now().isoformat()
+        })
+        
+        # Coletar métrica real do chat
+        save_chat_metric('sign', username, len(message), time_taken, True)
+        
+        return {
+            'message': message,
+            'signature': signature.hex(),
+            'certificate': cert.public_bytes(serialization.Encoding.PEM).decode(),
+            'timestamp': datetime.now().isoformat(),
+            'sender': username
+        }
+    
+    def verify_message(self, signed_message):
+        """Verifica assinatura da mensagem"""
+        start_time = time.time()
+        start_cpu = psutil.cpu_percent()
+        start_memory = psutil.virtual_memory().used
+        
+        try:
+            cert_pem = signed_message['certificate']
+            cert = x509.load_pem_x509_certificate(cert_pem.encode())
+            public_key = cert.public_key()
+            
+            message_bytes = signed_message['message'].encode('utf-8')
+            signature = bytes.fromhex(signed_message['signature'])
+            
+            public_key.verify(
+                signature,
+                message_bytes,
+                padding.PSS(
+                    mgf=padding.MGF1(hashes.SHA256()),
+                    salt_length=padding.PSS.MAX_LENGTH
+                ),
+                hashes.SHA256()
+            )
+            
+            end_time = time.time()
+            end_cpu = psutil.cpu_percent()
+            end_memory = psutil.virtual_memory().used
+            time_taken = end_time - start_time
+            
+            # Coletar métricas do sistema
+            self.performance_data.append({
+                'operation': 'verify',
+                'time': time_taken,
+                'cpu_usage': end_cpu - start_cpu,
+                'memory_usage': end_memory - start_memory,
+                'message_size': len(message_bytes),
+                'timestamp': datetime.now().isoformat()
+            })
+            
+            # Coletar métrica real do chat
+            save_chat_metric('verify', signed_message.get('sender', 'unknown'), 
+                           len(signed_message['message']), time_taken, True)
+            
+            return True
+        except Exception as e:
+            end_time = time.time()
+            time_taken = end_time - start_time
+            save_chat_metric('verify', signed_message.get('sender', 'unknown'), 
+                           len(signed_message.get('message', '')), time_taken, False)
+            return False
+
+# Configuração da aplicação
+script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+template_dir = os.path.join(script_dir, 'templates')
+app = Flask(__name__, template_folder=template_dir)
+app.config['SECRET_KEY'] = 'crypto-chat-secret-key'
+socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Instâncias globais
+cert_manager = CertificateManager()
+message_signer = MessageSigner(cert_manager)
+
+# Usuários pré-cadastrados
+USERS = {
+    'carlos': {'password': '123456', 'name': 'Carlos Lavor Neto'},
+    'eric': {'password': '123456', 'name': 'Eric Dias Perin'},
+    'alexandro': {'password': '123456', 'name': 'Alexandro Pantoja'}
 }
 
-# Armazenamento de mensagens
-messages_store = []
+# Estatísticas em tempo real
+chat_stats = {
+    'messages_sent': 0,
+    'messages_verified': 0,
+    'active_users': set(),
+    'total_signatures': 0,
+    'verification_success_rate': 100.0
+}
 
 @app.route('/')
 def index():
-    """Página inicial - redireciona para login se não autenticado"""
     if 'username' not in session:
         return redirect(url_for('login'))
     return render_template('chat.html', username=session['username'])
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """Página de login"""
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         
-        if username in users_db and check_password_hash(users_db[username]['password'], password):
+        if username in USERS and USERS[username]['password'] == password:
             session['username'] = username
+            session['name'] = USERS[username]['name']
             
             # Gerar certificado se não existir
-            if users_db[username]['cert_id'] is None:
-                user_info = signature_app.create_user(
-                    users_db[username]['name'],
-                    users_db[username]['email']
-                )
-                users_db[username]['cert_id'] = user_info['cert_id']
+            cert_path = os.path.join(cert_manager.cert_dir, f"{username}.p12")
+            if not os.path.exists(cert_path):
+                cert_manager.generate_certificate(username, USERS[username]['name'])
             
             return redirect(url_for('index'))
         else:
-            return render_template('login.html', error='Usuário ou senha inválidos')
+            return render_template('login.html', error='Credenciais inválidas')
     
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
-    """Logout do usuário"""
-    session.pop('username', None)
+    if 'username' in session:
+        chat_stats['active_users'].discard(session['username'])
+    session.clear()
     return redirect(url_for('login'))
 
-@app.route('/send_message', methods=['POST'])
-def send_message():
-    """Enviar mensagem assinada"""
+@socketio.on('connect')
+def on_connect():
+    if 'username' in session:
+        join_room('chat')
+        chat_stats['active_users'].add(session['username'])
+        emit('user_joined', {
+            'username': session['username'],
+            'name': session['name'],
+            'timestamp': datetime.now().isoformat()
+        }, room='chat')
+        
+        # Enviar estatísticas atualizadas
+        emit('stats_update', {
+            'active_users': len(chat_stats['active_users']),
+            'messages_sent': chat_stats['messages_sent'],
+            'verification_rate': chat_stats['verification_success_rate']
+        }, room='chat')
+
+@socketio.on('disconnect')
+def on_disconnect():
+    if 'username' in session:
+        chat_stats['active_users'].discard(session['username'])
+        leave_room('chat')
+        emit('user_left', {
+            'username': session['username'],
+            'timestamp': datetime.now().isoformat()
+        }, room='chat')
+
+@socketio.on('send_message')
+def handle_message(data):
     if 'username' not in session:
-        return jsonify({'error': 'Não autenticado'}), 401
-    
-    data = request.get_json()
-    message_text = data.get('message', '').strip()
-    recipient = data.get('recipient', '').strip()
-    
-    if not message_text:
-        return jsonify({'error': 'Mensagem não pode estar vazia'}), 400
-    
-    if not recipient or recipient not in users_db:
-        return jsonify({'error': 'Destinatário inválido'}), 400
+        return
     
     username = session['username']
-    sender_cert_id = users_db[username]['cert_id']
-    recipient_email = users_db[recipient]['email']
+    message = data['message']
     
-    try:
-        # Assinar mensagem
-        signed_message = signature_app.send_message(
-            sender_cert_id,
-            recipient_email,
-            message_text
+    # Assinar mensagem
+    signed_message = message_signer.sign_message(username, message)
+    
+    if signed_message:
+        # Verificar assinatura
+        is_valid = message_signer.verify_message(signed_message)
+        
+        # Atualizar estatísticas
+        chat_stats['messages_sent'] += 1
+        chat_stats['total_signatures'] += 1
+        if is_valid:
+            chat_stats['messages_verified'] += 1
+        
+        chat_stats['verification_success_rate'] = (
+            chat_stats['messages_verified'] / chat_stats['total_signatures'] * 100
         )
         
-        # Adicionar informações extras para o chat
-        chat_message = {
-            'id': len(messages_store) + 1,
-            'sender': username,
-            'sender_name': users_db[username]['name'],
-            'recipient': recipient,
-            'recipient_name': users_db[recipient]['name'],
-            'message': message_text,
+        # Enviar mensagem para todos
+        emit('new_message', {
+            'id': str(uuid.uuid4()),
+            'username': username,
+            'name': session['name'],
+            'message': message,
             'timestamp': signed_message['timestamp'],
-            'signature': signed_message['signature'][:50] + '...',  # Truncar para exibição
-            'signed_message': signed_message,
-            'verified': None  # Será verificado quando solicitado
+            'verified': is_valid,
+            'signature_preview': signed_message['signature'][:16] + '...'
+        }, room='chat')
+        
+        # Atualizar estatísticas
+        emit('stats_update', {
+            'active_users': len(chat_stats['active_users']),
+            'messages_sent': chat_stats['messages_sent'],
+            'verification_rate': chat_stats['verification_success_rate']
+        }, room='chat')
+
+@app.route('/performance')
+def performance():
+    """Endpoint para dados de performance"""
+    return {
+        'performance_data': message_signer.performance_data,
+        'stats': {
+            'total_operations': len(message_signer.performance_data),
+            'avg_sign_time': sum(d['time'] for d in message_signer.performance_data if d['operation'] == 'sign') / max(1, len([d for d in message_signer.performance_data if d['operation'] == 'sign'])),
+            'avg_verify_time': sum(d['time'] for d in message_signer.performance_data if d['operation'] == 'verify') / max(1, len([d for d in message_signer.performance_data if d['operation'] == 'verify']))
         }
-        
-        messages_store.append(chat_message)
-        
-        # Salvar mensagem em arquivo
-        filename = f"message_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{username}_to_{recipient}.json"
-        signature_app.save_message_to_file(signed_message, filename)
-        
-        return jsonify({
-            'success': True,
-            'message_id': chat_message['id'],
-            'timestamp': chat_message['timestamp']
-        })
-        
-    except Exception as e:
-        return jsonify({'error': f'Erro ao enviar mensagem: {str(e)}'}), 500
-
-@app.route('/get_messages')
-def get_messages():
-    """Obter mensagens do chat"""
-    if 'username' not in session:
-        return jsonify({'error': 'Não autenticado'}), 401
-    
-    username = session['username']
-    
-    # Filtrar mensagens para o usuário atual (enviadas ou recebidas)
-    user_messages = [
-        msg for msg in messages_store
-        if msg['sender'] == username or msg['recipient'] == username
-    ]
-    
-    return jsonify({'messages': user_messages})
-
-@app.route('/verify_message/<int:message_id>')
-def verify_message(message_id):
-    """Verificar assinatura de uma mensagem"""
-    if 'username' not in session:
-        return jsonify({'error': 'Não autenticado'}), 401
-    
-    # Encontrar mensagem
-    message = next((msg for msg in messages_store if msg['id'] == message_id), None)
-    
-    if not message:
-        return jsonify({'error': 'Mensagem não encontrada'}), 404
-    
-    try:
-        # Verificar assinatura
-        is_valid, result = signature_app.verify_signature(message['signed_message'])
-        
-        # Atualizar status de verificação
-        message['verified'] = is_valid
-        message['verification_result'] = result
-        
-        return jsonify({
-            'valid': is_valid,
-            'result': result,
-            'message_id': message_id
-        })
-        
-    except Exception as e:
-        return jsonify({'error': f'Erro na verificação: {str(e)}'}), 500
-
-@app.route('/get_users')
-def get_users():
-    """Obter lista de usuários disponíveis"""
-    if 'username' not in session:
-        return jsonify({'error': 'Não autenticado'}), 401
-    
-    current_user = session['username']
-    available_users = [
-        {'username': username, 'name': data['name']}
-        for username, data in users_db.items()
-        if username != current_user
-    ]
-    
-    return jsonify({'users': available_users})
-
-@app.route('/chat_stats')
-def chat_stats():
-    """Estatísticas do chat"""
-    if 'username' not in session:
-        return jsonify({'error': 'Não autenticado'}), 401
-    
-    username = session['username']
-    
-    # Calcular estatísticas
-    total_messages = len(messages_store)
-    user_sent = len([msg for msg in messages_store if msg['sender'] == username])
-    user_received = len([msg for msg in messages_store if msg['recipient'] == username])
-    verified_messages = len([msg for msg in messages_store if msg.get('verified') == True])
-    
-    return jsonify({
-        'total_messages': total_messages,
-        'sent_by_user': user_sent,
-        'received_by_user': user_received,
-        'verified_messages': verified_messages,
-        'total_users': len(users_db),
-        'certificates_generated': len([u for u in users_db.values() if u['cert_id'] is not None])
-    })
+    }
 
 if __name__ == '__main__':
-    # Criar diretórios necessários
-    os.makedirs('atividade2/templates', exist_ok=True)
-    os.makedirs('atividade2/static', exist_ok=True)
-    
-    print("=== CHAT COM ASSINATURA DIGITAL ===")
-    print("Usuários disponíveis:")
-    print("- carlos / 123456 (Carlos Lavor Neto)")
-    print("- eric / 123456 (Eric Dias Perin)")
-    print("- alexandro / 123456 (Alexandro Pantoja)")
-    print("\nAcesse: http://localhost:8080")
-    print("=====================================")
-    
-    app.run(debug=True, host='0.0.0.0', port=8080)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True)
