@@ -146,60 +146,73 @@ def generate_chat_metrics_charts():
     print("   - results/chat_metrics_table_latex.tex")
 
 def create_latex_charts(df):
-    """Cria gráficos otimizados para LaTeX"""
+    """Cria gráficos otimizados para LaTeX com foco acadêmico"""
     sign_data = df[df['operation'] == 'sign']
     verify_data = df[df['operation'] == 'verify']
     
-    # Gráfico de métricas para LaTeX
+    # Gráfico de métricas para LaTeX - Foco acadêmico
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     
-    # 1. Timeline do chat real
+    # 1. Análise temporal detalhada
     if not sign_data.empty:
         axes[0,0].plot(sign_data['time_from_start'], sign_data['time'] * 1000, 
-                      'o-', markersize=6, linewidth=2, label='Assinatura', color='blue')
+                      'o-', markersize=8, linewidth=3, label='Assinatura Digital', 
+                      color='darkblue', alpha=0.8)
     if not verify_data.empty:
         axes[0,0].plot(verify_data['time_from_start'], verify_data['time'] * 1000, 
-                      's-', markersize=6, linewidth=2, label='Verificação', color='red')
-    axes[0,0].set_xlabel('Tempo (s)')
-    axes[0,0].set_ylabel('Tempo (ms)')
-    axes[0,0].set_title('Timeline do Chat Real')
-    axes[0,0].legend()
+                      's-', markersize=8, linewidth=3, label='Verificação Digital', 
+                      color='darkred', alpha=0.8)
+    axes[0,0].set_xlabel('Tempo de Execução (segundos)', fontweight='bold')
+    axes[0,0].set_ylabel('Latência (ms)', fontweight='bold')
+    axes[0,0].set_title('Análise Temporal de Operações Criptográficas', fontweight='bold')
+    axes[0,0].legend(fontsize=11)
+    axes[0,0].grid(True, alpha=0.3)
     
-    # 2. Performance por usuário (se houver múltiplos usuários)
-    if 'username' in df.columns and len(df['username'].unique()) > 1:
-        user_stats = df.groupby(['username', 'operation'])['time'].mean().unstack(fill_value=0) * 1000
-        user_stats.plot(kind='bar', ax=axes[0,1], alpha=0.8, color=['blue', 'red'])
-        axes[0,1].set_title('Performance por Usuário')
-        axes[0,1].set_ylabel('Tempo Médio (ms)')
-        axes[0,1].tick_params(axis='x', rotation=45)
-    else:
-        # Gráfico alternativo se só há um usuário
-        operations = ['Assinatura', 'Verificação']
-        means = [sign_data['time'].mean() * 1000 if not sign_data.empty else 0,
-                 verify_data['time'].mean() * 1000 if not verify_data.empty else 0]
-        axes[0,1].bar(operations, means, alpha=0.8, color=['blue', 'red'])
-        axes[0,1].set_title('Tempos Médios')
-        axes[0,1].set_ylabel('Tempo (ms)')
+    # 2. Análise estatística comparativa
+    if not sign_data.empty and not verify_data.empty:
+        sign_mean = sign_data['time'].mean() * 1000
+        verify_mean = verify_data['time'].mean() * 1000
+        sign_std = sign_data['time'].std() * 1000
+        verify_std = verify_data['time'].std() * 1000
+        
+        operations = ['Assinatura\nDigital', 'Verificação\nDigital']
+        means = [sign_mean, verify_mean]
+        stds = [sign_std, verify_std]
+        
+        bars = axes[0,1].bar(operations, means, yerr=stds, capsize=10, 
+                           alpha=0.8, color=['steelblue', 'crimson'], 
+                           edgecolor='black', linewidth=2)
+        axes[0,1].set_ylabel('Tempo Médio ± Desvio (ms)', fontweight='bold')
+        axes[0,1].set_title('Análise Estatística Comparativa', fontweight='bold')
+        
+        # Adicionar valores
+        for bar, mean_val, std_val in zip(bars, means, stds):
+            axes[0,1].text(bar.get_x() + bar.get_width()/2., bar.get_height() + std_val,
+                          f'{mean_val:.1f}±{std_val:.1f}ms', ha='center', va='bottom', 
+                          fontweight='bold')
     
-    # 3. Distribuição de tempos
+    # 3. Distribuição probabilística
     if not sign_data.empty:
-        axes[1,0].hist(sign_data['time'] * 1000, bins=15, alpha=0.7, 
-                      color='lightblue', edgecolor='navy', label='Assinatura')
+        axes[1,0].hist(sign_data['time'] * 1000, bins=12, alpha=0.7, 
+                      color='lightsteelblue', edgecolor='darkblue', linewidth=2,
+                      label=f'Assinatura (n={len(sign_data)})', density=True)
     if not verify_data.empty:
-        axes[1,0].hist(verify_data['time'] * 1000, bins=15, alpha=0.7, 
-                      color='lightcoral', edgecolor='darkred', label='Verificação')
-    axes[1,0].set_xlabel('Tempo (ms)')
-    axes[1,0].set_ylabel('Frequência')
-    axes[1,0].set_title('Distribuição de Tempos')
+        axes[1,0].hist(verify_data['time'] * 1000, bins=12, alpha=0.7, 
+                      color='lightcoral', edgecolor='darkred', linewidth=2,
+                      label=f'Verificação (n={len(verify_data)})', density=True)
+    axes[1,0].set_xlabel('Latência (ms)', fontweight='bold')
+    axes[1,0].set_ylabel('Densidade de Probabilidade', fontweight='bold')
+    axes[1,0].set_title('Distribuição Probabilística de Latências', fontweight='bold')
     axes[1,0].legend()
     
-    # 4. Tamanho vs Tempo
+    # 4. Análise de eficiência computacional
     if not sign_data.empty:
-        axes[1,1].scatter(sign_data['message_size'], sign_data['time'] * 1000, 
-                         alpha=0.7, c='green', s=50)
-        axes[1,1].set_xlabel('Tamanho da Mensagem')
-        axes[1,1].set_ylabel('Tempo de Assinatura (ms)')
-        axes[1,1].set_title('Tamanho vs Tempo')
+        efficiency = sign_data['message_size'] / (sign_data['time'] * 1000)  # chars/ms
+        axes[1,1].scatter(sign_data['message_size'], efficiency, 
+                         alpha=0.8, c='forestgreen', s=80, edgecolor='darkgreen')
+        axes[1,1].set_xlabel('Tamanho da Mensagem (caracteres)', fontweight='bold')
+        axes[1,1].set_ylabel('Eficiência (chars/ms)', fontweight='bold')
+        axes[1,1].set_title('Eficiência Computacional', fontweight='bold')
     
     plt.tight_layout()
     plt.savefig('results/chat_metrics_latex.png', dpi=300, bbox_inches='tight')
