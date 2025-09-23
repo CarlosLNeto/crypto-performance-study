@@ -126,7 +126,6 @@ def show_results_summary():
         ('atividade1/results/summary_table.csv', 'Tabela resumo - simétricos'),
         
         # Parte II - Assinatura Digital
-        ('atividade2/data/signature_performance_results.csv', 'Dados de performance - assinatura digital'),
         ('atividade2/results/signature_performance_analysis.png', 'Performance - assinatura digital'),
         ('atividade2/results/signature_operations_comparison.png', 'Comparação - operações de assinatura'),
         ('atividade2/certificates/', 'Certificados digitais gerados'),

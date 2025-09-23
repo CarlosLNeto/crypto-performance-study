@@ -26,14 +26,18 @@ from datetime import datetime
 chat_metrics = []
 metrics_lock = threading.Lock()
 
-def save_chat_metric(operation, username, message_size, time_taken, success=True):
-    """Salva métrica de uso real do chat"""
+def save_chat_metric(operation, username, message, time_taken, success=True):
+    """Salva métrica de uso real do chat com informações detalhadas de tamanho"""
     with metrics_lock:
+        message_chars = len(message)
+        message_bytes = len(message.encode('utf-8'))
+        
         metric = {
             'timestamp': datetime.now().isoformat(),
             'operation': operation,
             'username': username,
-            'message_size': message_size,
+            'message_size_chars': message_chars,
+            'message_size_bytes': message_bytes,
             'time': time_taken,
             'success': success,
             'test_type': 'real_chat_usage',
@@ -56,8 +60,8 @@ def save_metrics_to_file():
     if chat_metrics:
         with open(filepath, 'w', newline='') as f:
             writer = csv.DictWriter(f, fieldnames=['timestamp', 'operation', 'username', 
-                                                 'message_size', 'time', 'success', 
-                                                 'test_type', 'scenario'])
+                                                 'message_size_chars', 'message_size_bytes',
+                                                 'time', 'success', 'test_type', 'scenario'])
             writer.writeheader()
             writer.writerows(chat_metrics)
 
@@ -163,7 +167,7 @@ class MessageSigner:
         })
         
         # Coletar métrica real do chat
-        save_chat_metric('sign', username, len(message), time_taken, True)
+        save_chat_metric('sign', username, message, time_taken, True)
         
         return {
             'message': message,
@@ -214,14 +218,14 @@ class MessageSigner:
             
             # Coletar métrica real do chat
             save_chat_metric('verify', signed_message.get('sender', 'unknown'), 
-                           len(signed_message['message']), time_taken, True)
+                           signed_message['message'], time_taken, True)
             
             return True
         except Exception as e:
             end_time = time.time()
             time_taken = end_time - start_time
             save_chat_metric('verify', signed_message.get('sender', 'unknown'), 
-                           len(signed_message.get('message', '')), time_taken, False)
+                           signed_message.get('message', ''), time_taken, False)
             return False
 
 # Configuração da aplicação

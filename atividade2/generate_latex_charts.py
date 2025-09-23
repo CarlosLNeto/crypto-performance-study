@@ -88,9 +88,11 @@ def generate_chat_metrics_charts():
     
     # Tamanhos de mensagem
     if not sign_data.empty:
-        axes[1,1].scatter(sign_data['message_size'], sign_data['time'] * 1000, 
+        # Usar message_size_chars se disponível, senão usar message_size (compatibilidade)
+        size_col = 'message_size_chars' if 'message_size_chars' in sign_data.columns else 'message_size'
+        axes[1,1].scatter(sign_data[size_col], sign_data['time'] * 1000, 
                          alpha=0.7, c='green')
-        axes[1,1].set_xlabel('Tamanho da Mensagem')
+        axes[1,1].set_xlabel('Tamanho da Mensagem (caracteres)')
         axes[1,1].set_ylabel('Tempo de Assinatura (ms)')
         axes[1,1].set_title('Tempo vs Tamanho da Mensagem')
     
@@ -207,8 +209,10 @@ def create_latex_charts(df):
     
     # 4. Análise de eficiência computacional
     if not sign_data.empty:
-        efficiency = sign_data['message_size'] / (sign_data['time'] * 1000)  # chars/ms
-        axes[1,1].scatter(sign_data['message_size'], efficiency, 
+        # Usar message_size_chars se disponível, senão usar message_size (compatibilidade)
+        size_col = 'message_size_chars' if 'message_size_chars' in sign_data.columns else 'message_size'
+        efficiency = sign_data[size_col] / (sign_data['time'] * 1000)  # chars/ms
+        axes[1,1].scatter(sign_data[size_col], efficiency, 
                          alpha=0.8, c='forestgreen', s=80, edgecolor='darkgreen')
         axes[1,1].set_xlabel('Tamanho da Mensagem (caracteres)', fontweight='bold')
         axes[1,1].set_ylabel('Eficiência (chars/ms)', fontweight='bold')
