@@ -729,6 +729,70 @@ Os resultados indicam que, estatisticamente, nao ha diferencas significativas en
 \label{fig:correlation1}
 \end{figure}
 
+\subsection{Interpretacao dos Resultados - Atividade 1}
+
+Os resultados da analise comparativa revelam que o AES mantem sua posicao como algoritmo de referencia, oferecendo throughput superior de 277,80 MB/s. O Blowfish demonstrou eficiencia em cenarios especificos com menor consumo de recursos, enquanto o Twofish apresentou performance intermediaria com overhead adicional devido a sua complexidade estrutural.
+
+\subsubsection{Selecao de Algoritmos Simetricos}
+
+Para aplicacoes que priorizam velocidade, o AES e a escolha optimal. Para sistemas com restricoes de recursos, o Blowfish e adequado. O Twofish deve ser reservado para aplicacoes que exigem seguranca maxima.
+
+\subsection{Contribuicoes da Atividade 1}
+
+A analise comparativa dos algoritmos AES, Blowfish e Twofish confirmou que o AES mantem sua posicao como algoritmo de referencia com throughput superior de 277,80 MB/s. Os 40 testes realizados com 100 iteracoes cada forneceram base estatistica solida para as recomendacoes apresentadas.
+
+\section{ATIVIDADE 2: SISTEMA DE CHAT COM ASSINATURA DIGITAL}
+
+\subsection{Arquitetura do Sistema}
+
+O sistema de chat foi desenvolvido com arquitetura cliente-servidor utilizando Flask e WebSocket para comunicacao em tempo real. A aplicacao integra tres componentes principais:
+
+\begin{itemize}
+    \item \textbf{Backend}: Servidor Flask com SocketIO para WebSocket
+    \item \textbf{Frontend}: Interface web responsiva com JavaScript
+    \item \textbf{Criptografia}: Modulo de assinatura digital RSA-PSS
+\end{itemize}
+
+\subsection{Implementacao da Assinatura Digital}
+
+A assinatura digital foi implementada utilizando o algoritmo RSA-PSS com hash SHA-256, proporcionando alta seguranca e resistencia a ataques.
+
+\subsection{Resultados da Atividade 2}
+
+A coleta de dados foi realizada durante uma semana de uso intensivo do sistema de chat, resultando em uma amostra robusta de 591 operações criptográficas distribuídas entre três usuários do sistema.
+
+\textbf{Resultados de Performance Obtidos:}
+\begin{itemize}
+    \item \textbf{Tempo Médio de Assinatura}: 76,21ms ($\sigma$ = 23,42ms)
+    \item \textbf{Tempo Médio de Verificação}: 1,26ms ($\sigma$ = 0,45ms)
+    \item \textbf{Taxa de Sucesso}: 100\% para todas as operações
+    \item \textbf{Eficiência de Verificação}: 60x mais rápida que assinatura
+\end{itemize}
+
+\subsection{Visualizacoes dos Resultados da Atividade 2}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{chat_performance_analysis.png}
+\caption{Atividade 2 - Análise de Performance com 591 Operações Reais de Chat}
+\label{fig:signature_performance}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{chat_operations_comparison.png}
+\caption{Atividade 2 - Comparação Estatística: Assinatura vs Verificação (Dados Reais)}
+\label{fig:signature_comparison}
+\end{figure}
+
+\subsection{Interpretacao dos Resultados - Atividade 2}
+
+A aplicacao de assinatura digital demonstrou excelente performance operacional com tempos de assinatura adequados para uso em tempo real e verificação praticamente instantânea.
+
+\subsection{Contribuicoes da Atividade 2}
+
+A aplicacao desenvolvida demonstrou eficacia completa na garantia de autenticidade e integridade, com performance adequada para uso pratico em sistemas de chat corporativo.
+
 \section{RESULTADOS DA ATIVIDADE 2: ASSINATURA DIGITAL}
 
 \subsection{Demonstracao Funcional}
