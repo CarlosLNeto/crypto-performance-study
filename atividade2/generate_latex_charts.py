@@ -104,7 +104,7 @@ def generate_chat_metrics_charts():
     # Box plot
     if not sign_data.empty and not verify_data.empty:
         data = [sign_data['time'] * 1000, verify_data['time'] * 1000]
-        bp = axes[0].boxplot(data, labels=['Assinatura', 'Verificação'], patch_artist=True)
+        bp = axes[0].boxplot(data, tick_labels=['Assinatura', 'Verificação'], patch_artist=True)
         bp['boxes'][0].set_facecolor('lightblue')
         bp['boxes'][1].set_facecolor('lightgreen')
         axes[0].set_ylabel('Tempo (ms)')
@@ -153,19 +153,54 @@ def create_latex_charts(df):
     # Gráfico de métricas para LaTeX
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     
-    # Repetir os gráficos principais com estilo LaTeX
-    # (timestamp já foi processado na função principal)
-    
+    # 1. Timeline do chat real
     if not sign_data.empty:
         axes[0,0].plot(sign_data['time_from_start'], sign_data['time'] * 1000, 
-                      'o-', markersize=6, linewidth=2, label='Assinatura')
+                      'o-', markersize=6, linewidth=2, label='Assinatura', color='blue')
     if not verify_data.empty:
         axes[0,0].plot(verify_data['time_from_start'], verify_data['time'] * 1000, 
-                      's-', markersize=6, linewidth=2, label='Verificação')
+                      's-', markersize=6, linewidth=2, label='Verificação', color='red')
+    axes[0,0].set_xlabel('Tempo (s)')
+    axes[0,0].set_ylabel('Tempo (ms)')
     axes[0,0].set_title('Timeline do Chat Real')
     axes[0,0].legend()
     
-    # Outros gráficos similares...
+    # 2. Performance por usuário (se houver múltiplos usuários)
+    if 'username' in df.columns and len(df['username'].unique()) > 1:
+        user_stats = df.groupby(['username', 'operation'])['time'].mean().unstack(fill_value=0) * 1000
+        user_stats.plot(kind='bar', ax=axes[0,1], alpha=0.8, color=['blue', 'red'])
+        axes[0,1].set_title('Performance por Usuário')
+        axes[0,1].set_ylabel('Tempo Médio (ms)')
+        axes[0,1].tick_params(axis='x', rotation=45)
+    else:
+        # Gráfico alternativo se só há um usuário
+        operations = ['Assinatura', 'Verificação']
+        means = [sign_data['time'].mean() * 1000 if not sign_data.empty else 0,
+                 verify_data['time'].mean() * 1000 if not verify_data.empty else 0]
+        axes[0,1].bar(operations, means, alpha=0.8, color=['blue', 'red'])
+        axes[0,1].set_title('Tempos Médios')
+        axes[0,1].set_ylabel('Tempo (ms)')
+    
+    # 3. Distribuição de tempos
+    if not sign_data.empty:
+        axes[1,0].hist(sign_data['time'] * 1000, bins=15, alpha=0.7, 
+                      color='lightblue', edgecolor='navy', label='Assinatura')
+    if not verify_data.empty:
+        axes[1,0].hist(verify_data['time'] * 1000, bins=15, alpha=0.7, 
+                      color='lightcoral', edgecolor='darkred', label='Verificação')
+    axes[1,0].set_xlabel('Tempo (ms)')
+    axes[1,0].set_ylabel('Frequência')
+    axes[1,0].set_title('Distribuição de Tempos')
+    axes[1,0].legend()
+    
+    # 4. Tamanho vs Tempo
+    if not sign_data.empty:
+        axes[1,1].scatter(sign_data['message_size'], sign_data['time'] * 1000, 
+                         alpha=0.7, c='green', s=50)
+        axes[1,1].set_xlabel('Tamanho da Mensagem')
+        axes[1,1].set_ylabel('Tempo de Assinatura (ms)')
+        axes[1,1].set_title('Tamanho vs Tempo')
+    
     plt.tight_layout()
     plt.savefig('results/chat_metrics_latex.png', dpi=300, bbox_inches='tight')
     plt.close()
@@ -173,13 +208,29 @@ def create_latex_charts(df):
     # Gráfico de estatísticas
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
     
+    # 1. Tempos médios
     operations = ['Assinatura', 'Verificação']
     means = [sign_data['time'].mean() * 1000 if not sign_data.empty else 0,
              verify_data['time'].mean() * 1000 if not verify_data.empty else 0]
     
-    axes[0].bar(operations, means, alpha=0.8, color=['blue', 'red'])
+    bars = axes[0].bar(operations, means, alpha=0.8, color=['blue', 'red'])
     axes[0].set_title('Tempos Médios Reais')
     axes[0].set_ylabel('Tempo (ms)')
+    
+    # Adicionar valores nas barras
+    for bar, mean_val in zip(bars, means):
+        if mean_val > 0:
+            axes[0].text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                        f'{mean_val:.2f}ms', ha='center', va='bottom')
+    
+    # 2. Contagem de operações
+    if not df.empty:
+        operation_counts = df['operation'].value_counts()
+        colors = ['lightblue' if op == 'sign' else 'lightcoral' for op in operation_counts.index]
+        
+        axes[1].pie(operation_counts.values, labels=operation_counts.index, 
+                   autopct='%1.1f%%', colors=colors, startangle=90)
+        axes[1].set_title('Distribuição de Operações')
     
     plt.tight_layout()
     plt.savefig('results/chat_statistics_latex.png', dpi=300, bbox_inches='tight')
