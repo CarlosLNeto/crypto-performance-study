@@ -87,7 +87,7 @@ python atividade1/run_atividade1.py
 **Roteiro de Execução:**
 
 ```bash
-# 1. Executar o chat e enviar mensagens
+# 1. Executar o chat e enviar mensagens reais
 python atividade2/run_chat.py
 # (Acesse http://localhost:8081, faça login, envie mensagens, depois Ctrl+C)
 
@@ -95,16 +95,34 @@ python atividade2/run_chat.py
 python atividade2/generate_latex_charts.py
 ```
 
-**Sistema de Coleta:**
-- ✅ **Métricas Reais**: Coleta automática durante uso do chat
-- ✅ **Dados Reais**: Apenas mensagens reais enviadas pelos usuários
-- ✅ **Sem Simulação**: Análise baseada exclusivamente em uso real
+**Sistema de Coleta de Dados Reais:**
+- ✅ **Coleta Automática**: Cada mensagem enviada no chat gera métricas
+- ✅ **Dados Exclusivamente Reais**: Sem simulação ou dados artificiais
+- ✅ **Métricas por Usuário**: Separadas por usuário real do chat
+- ✅ **Persistência**: Salva em `data/real_chat_metrics.csv`
+- ✅ **Análise Imediata**: Gráficos gerados a partir dos dados coletados
+
+**Funcionalidades do Chat:**
+- Comunicação bidirecional em tempo real via WebSocket
+- Assinatura digital automática e transparente (RSA-PSS + SHA-256)
+- Verificação de integridade em tempo real
+- Certificados X.509 gerados automaticamente
+- Interface responsiva e moderna
+- Coleta de métricas durante uso real
+
+**Métricas Coletadas Durante Uso Real:**
+- Tempo de assinatura por mensagem real
+- Tempo de verificação por mensagem real
+- Tamanho real das mensagens enviadas
+- Performance por usuário real
+- Taxa de sucesso das operações
+- Timeline de uso do sistema
 
 **Resultados gerados:**
-- Sistema de chat em tempo real com WebSocket
+- Sistema de chat funcional em tempo real
+- 4 gráficos baseados em dados reais + 1 tabela LaTeX
+- Análise de performance com dados exclusivamente reais
 - Certificados X.509 gerados automaticamente
-- 4 gráficos baseados em métricas reais + 1 tabela LaTeX
-- Análise de operações criptográficas reais
 
 ### Execução Completa (Ambas as Atividades)
 ```bash
@@ -173,12 +191,12 @@ python src/run_complete_study.py
 - Escalabilidade por tamanho
 - Matriz de correlação
 
-### Atividade 2 (4 gráficos + 1 tabela LaTeX):
-- Performance das operações do chat (chat_performance_analysis.png)
-- Comparação de operações do chat (chat_operations_comparison.png)
-- Métricas para LaTeX (chat_metrics_latex.png)
-- Estatísticas para LaTeX (chat_statistics_latex.png)
-- Tabela LaTeX (chat_metrics_table_latex.tex)
+### Atividade 2 (4 gráficos + 1 tabela LaTeX baseados em dados reais):
+- Timeline de uso real do chat (chat_performance_analysis.png)
+- Comparação de operações reais (chat_operations_comparison.png)
+- Métricas reais para LaTeX (chat_metrics_latex.png)
+- Estatísticas reais para LaTeX (chat_statistics_latex.png)
+- Tabela LaTeX com dados reais (chat_metrics_table_latex.tex)
 
 ## Documentação
 

@@ -491,55 +491,40 @@ O sistema inclui tres usuarios para demonstracao:
     \item \textbf{alexandro/123456}: Alexandro Pantoja
 \end{itemize}
 
-\subsection{Utilizacao das Metricas do Chat}
+\subsection{Sistema de Coleta de Metricas Reais}
 
-As metricas coletadas durante o funcionamento do chat sao utilizadas para:
+O sistema implementa coleta automatica de metricas durante o uso real do chat, garantindo que todas as analises sejam baseadas em dados genuinos de operacao:
 
 \begin{enumerate}
-    \item \textbf{Analise de Performance em Tempo Real}
+    \item \textbf{Coleta Automatica Durante Uso}
     \begin{itemize}
-        \item Monitoramento continuo das operacoes criptograficas
-        \item Deteccao de degradacao de performance
-        \item Alertas automaticos para anomalias
+        \item Cada mensagem enviada no chat gera metricas automaticamente
+        \item Cronometragem precisa de operacoes de assinatura e verificacao
+        \item Coleta transparente sem interferir na experiencia do usuario
     \end{itemize}
     
-    \item \textbf{Monitoramento de Qualidade do Servico}
+    \item \textbf{Dados Exclusivamente Reais}
     \begin{itemize}
-        \item Validacao de SLA (Service Level Agreement)
-        \item Medicao de tempos de resposta
-        \item Garantia de disponibilidade do sistema
+        \item Nenhuma simulacao ou geracao artificial de dados
+        \item Metricas baseadas em mensagens reais enviadas por usuarios
+        \item Tamanhos de mensagem variaveis conforme uso real
     \end{itemize}
     
-    \item \textbf{Otimizacao de Recursos do Sistema}
+    \item \textbf{Persistencia e Analise}
     \begin{itemize}
-        \item Identificacao de gargalos computacionais
-        \item Analise de uso de CPU e memoria
-        \item Planejamento de capacidade
-    \end{itemize}
-    
-    \item \textbf{Validacao da Escalabilidade}
-    \begin{itemize}
-        \item Comportamento com multiplos usuarios simultaneos
-        \item Analise de concorrencia
-        \item Limites de capacidade do sistema
-    \end{itemize}
-    
-    \item \textbf{Documentacao Academica e Tecnica}
-    \begin{itemize}
-        \item Evidencias empiricas para pesquisa
-        \item Comparacao com outros sistemas
-        \item Validacao de hipoteses teoricas
+        \item Dados salvos automaticamente em real\_chat\_metrics.csv
+        \item Analise imediata apos coleta de dados
+        \item Geracao de graficos baseados exclusivamente em dados reais
     \end{itemize}
 \end{enumerate}
 
-\begin{lstlisting}[caption=Script para geracao de graficos LaTeX]
-# Gerar graficos otimizados para LaTeX
-python atividade2/generate_latex_charts.py
+\begin{lstlisting}[caption=Roteiro de execucao para coleta de dados reais]
+# 1. Executar o chat e enviar mensagens reais
+python atividade2/run_chat.py
+# (Acessar http://localhost:8081, fazer login, enviar mensagens)
 
-# Arquivos gerados:
-# - chat_metrics_latex.png (4 subgraficos)
-# - chat_statistics_latex.png (estatisticas resumo)
-# - metrics_table_latex.tex (tabela LaTeX)
+# 2. Gerar graficos com dados reais coletados
+python atividade2/generate_latex_charts.py
 \end{lstlisting}
 
 O sistema de analise produz automaticamente 4 graficos de performance:
@@ -573,17 +558,25 @@ Adicionalmente, o sistema gera:
 
 \subsection{Resultados da Atividade 2}
 
-Os testes da aplicacao de chat demonstraram:
+Os testes da aplicacao de chat baseados em dados reais demonstraram:
 
 \begin{itemize}
-    \item \textbf{Eficacia}: 100\% de deteccao de alteracoes em mensagens
-    \item \textbf{Performance de Assinatura}: Tempo medio de 177,52ms com desvio de 141,50ms
-    \item \textbf{Performance de Verificacao}: Tempo medio de 0,09ms com desvio de 0,02ms
-    \item \textbf{Throughput de Assinatura}: 39,94 KB/s
-    \item \textbf{Throughput de Verificacao}: 41.823,63 KB/s
-    \item \textbf{Escalabilidade}: Performance estavel com 5 usuarios simultaneos
-    \item \textbf{Estabilidade}: Operacao continua por 30 segundos sem degradacao
+    \item \textbf{Coleta de Dados Reais}: Sistema coleta automaticamente metricas durante uso real do chat
+    \item \textbf{Performance de Assinatura}: Tempo medio baseado em mensagens reais enviadas por usuarios
+    \item \textbf{Performance de Verificacao}: Tempo medio de verificacao de mensagens reais
+    \item \textbf{Variabilidade Real}: Tamanhos de mensagem variaveis conforme uso genuino
+    \item \textbf{Analise por Usuario}: Metricas individuais por usuario real do sistema
+    \item \textbf{Taxa de Sucesso}: 100\% de eficacia em operacoes com dados reais
+    \item \textbf{Transparencia}: Coleta nao interfere na experiencia do usuario
 \end{itemize}
+
+\textbf{Metodologia de Coleta Real:}
+\begin{enumerate}
+    \item Usuario executa o chat e envia mensagens reais
+    \item Sistema coleta metricas automaticamente durante uso
+    \item Dados sao salvos em real\_chat\_metrics.csv
+    \item Analise e graficos gerados exclusivamente com dados reais
+\end{enumerate}
 
 \subsection{Segurança Implementada}
 
