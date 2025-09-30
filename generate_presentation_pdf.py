@@ -14,9 +14,9 @@ def generate_pdf_with_chrome():
     pdf_file = 'ApresentacaoAtividade1Topicos4.pdf'
     html_path = os.path.abspath(html_file)
     pdf_path = os.path.abspath(pdf_file)
-    
-    chrome_path = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-    
+
+    chrome_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
+
     if not os.path.exists(chrome_path):
         print("❌ Google Chrome não encontrado em /Applications/")
         return False
