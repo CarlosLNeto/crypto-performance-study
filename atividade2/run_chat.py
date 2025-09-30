@@ -24,7 +24,7 @@ if __name__ == '__main__':
     print("=" * 60)
     print("🚀 Funcionalidades:")
     print("   • Comunicação em tempo real via WebSocket")
-    print("   • Assinatura digital automática (RSA-PSS + SHA-256)")
+    print("   • Assinatura digital automática (AES + RSA-PSS + SHA-256)")
     print("   • Verificação de integridade em tempo real")
     print("   • Certificados X.509 gerados automaticamente")
     print("   • Interface responsiva e moderna")
