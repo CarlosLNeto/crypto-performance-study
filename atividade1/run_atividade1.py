@@ -52,7 +52,9 @@ def run_atividade1():
         print("- atividade1/results/performance_comparison.png")
         print("- atividade1/results/throughput_analysis.png")
         print("- atividade1/results/scalability_analysis.png")
+        print("- atividade1/results/comprehensive_comparison.png")
         print("- atividade1/results/correlation_heatmap.png")
+        print("- atividade1/results/summary_table.csv")
         
         return True
         

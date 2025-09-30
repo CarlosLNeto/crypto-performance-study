@@ -154,7 +154,7 @@ class CryptoBenchmark:
         # Configurações de teste
         algorithms = {
             'AES': {'func': self.test_aes, 'key_sizes': [128, 192, 256]},
-            'Blowfish': {'func': self.test_blowfish, 'key_sizes': [128, 256]},
+            'Blowfish': {'func': self.test_blowfish, 'key_sizes': [128, 192, 256]},
             'Twofish': {'func': self.test_twofish, 'key_sizes': [128, 192, 256]}
         }
         
