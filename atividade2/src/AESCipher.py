@@ -21,7 +21,9 @@ class AESCipher:
         
         start_time = time.time()
         
-        # Gerar IV aleatório
+        # Gerar IV (Vetor de Inicialização) aleatório é um valor aleatório usado em criptografia para
+        # garantir que o mesmo texto simples criptografado várias vezes produzirá
+        # textos cifrados diferentes, impedindo a análise de padrões.
         iv = os.urandom(16)  # 16 bytes para AES
         print(f"[AES] IV gerado: {iv.hex()} (128 bits)")
         
